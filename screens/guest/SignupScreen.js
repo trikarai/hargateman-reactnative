@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useReducer, useCallback } from "react";
+import React, { useReducer, useCallback } from "react";
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
   Button,
-  ActivityIndicator,
-  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -42,43 +40,32 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+const SignupScreen = (props) => {
   const dispatch = useDispatch();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
       password: "",
+      name: "",
+      phone: "",
     },
     inputValidities: {
       email: false,
       password: false,
+      name: false,
+      phone: false,
     },
     formIsValid: false,
   });
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert("An Error Occured", error, [{ text: "OK" }]);
-    }
-  }, [error]);
-
-  const loginHandler = async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await dispatch(
-        authActions.login(
-          formState.inputValues.email,
-          formState.inputValues.password
-        )
-      );
-      props.navigation.navigate("Product");
-    } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
-    }
+  const signupHandler = () => {
+    dispatch(
+      authActions.signup(
+        formState.inputValues.name,
+        formState.inputValues.phone,
+        formState.inputValues.email,
+        formState.inputValues.password
+      )
+    );
   };
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
@@ -91,6 +78,7 @@ const AuthScreen = (props) => {
     },
     [dispatchFormState]
   );
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -100,6 +88,24 @@ const AuthScreen = (props) => {
       <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
         <Card style={styles.authContainer}>
           <ScrollView>
+            <Input
+              id="name"
+              label="Name"
+              errorText="Please Insert Name"
+              keyboardType="default"
+              onInputChange={inputChangeHandler}
+              initialValue=""
+              required
+            />
+            <Input
+              id="phone"
+              label="phone"
+              errorText="Please Phone Number"
+              keyboardType="phone-pad"
+              onInputChange={inputChangeHandler}
+              initialValue=""
+              required
+            />
             <Input
               id="email"
               label="E-Mail"
@@ -124,29 +130,12 @@ const AuthScreen = (props) => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="large" color={Colors.primary} />
-              ) : (
-                <Button
-                  title="Login"
-                  color={Colors.primary}
-                  onPress={loginHandler}
-                />
-              )}
+              <Button
+                title="Sign Up"
+                color={Colors.primary}
+                onPress={signupHandler}
+              />
             </View>
-            {!isLoading ? (
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Switch to Sign Up"
-                  color={Colors.accent}
-                  onPress={() => {
-                    props.navigation.navigate("Signup");
-                  }}
-                />
-              </View>
-            ) : (
-              <View></View>
-            )}
           </ScrollView>
         </Card>
       </LinearGradient>
@@ -154,8 +143,8 @@ const AuthScreen = (props) => {
   );
 };
 
-AuthScreen.navigationOptions = {
-  headerTitle: "Login Harga Teman",
+SignupScreen.navigationOptions = {
+  headerTitle: "Sign Up",
 };
 
 const styles = StyleSheet.create({
@@ -170,7 +159,7 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "80%",
     maxWidth: 400,
-    maxHeight: 400,
+    maxHeight: 600,
     padding: 20,
   },
   buttonContainer: {
@@ -178,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthScreen;
+export default SignupScreen;

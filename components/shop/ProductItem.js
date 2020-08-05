@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Button, Platform } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+
+import Colors from "../../constants/colors";
+
 import {
   TouchableOpacity,
   TouchableNativeFeedback,

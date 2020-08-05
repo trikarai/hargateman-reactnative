@@ -15,7 +15,8 @@ import Input from "../../components/UI/Input";
 import Colors from "../../constants/colors";
 
 import { useDispatch } from "react-redux";
-import * as authActions from "../../store/actions/auth";
+
+import * as communitiesAction from "../../store/actions/community";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -42,18 +43,16 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = (props) => {
+const CreateCommunityScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
-      password: "",
     },
     inputValidities: {
-      email: false,
-      password: false,
+      name: false,
     },
     formIsValid: false,
   });
@@ -64,17 +63,12 @@ const AuthScreen = (props) => {
     }
   }, [error]);
 
-  const loginHandler = async () => {
+  const createHandler = () => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(
-        authActions.login(
-          formState.inputValues.email,
-          formState.inputValues.password
-        )
-      );
-      props.navigation.navigate("Product");
+      dispatch(communitiesAction.createCommunities(formState.inputValues.name));
+      props.navigation.navigate("Community");
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -94,59 +88,32 @@ const AuthScreen = (props) => {
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      keyboardVerticalOffset={50}
+      keyboardVerticalOffset={5}
       style={styles.screen}
     >
       <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
-        <Card style={styles.authContainer}>
+        <Card style={styles.cardContainer}>
           <ScrollView>
             <Input
-              id="email"
-              label="E-Mail"
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              errorText="Please enter a valid email address."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <Input
-              id="password"
-              label="Password"
+              id="name"
+              label="Community Name"
+              errorText="Please Insert Community Name"
               keyboardType="default"
-              secureTextEntry
-              required
-              minLength={5}
-              autoCapitalize="none"
-              errorText="Please enter a valid password."
-              onInputChange={inputChangeHandler}
               initialValue=""
+              onInputChange={inputChangeHandler}
+              required
             />
             <View style={styles.buttonContainer}>
               {isLoading ? (
                 <ActivityIndicator size="large" color={Colors.primary} />
               ) : (
                 <Button
-                  title="Login"
+                  title="Create"
                   color={Colors.primary}
-                  onPress={loginHandler}
+                  onPress={createHandler}
                 />
               )}
             </View>
-            {!isLoading ? (
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Switch to Sign Up"
-                  color={Colors.accent}
-                  onPress={() => {
-                    props.navigation.navigate("Signup");
-                  }}
-                />
-              </View>
-            ) : (
-              <View></View>
-            )}
           </ScrollView>
         </Card>
       </LinearGradient>
@@ -154,28 +121,23 @@ const AuthScreen = (props) => {
   );
 };
 
-AuthScreen.navigationOptions = {
-  headerTitle: "Login Harga Teman",
-};
+export default CreateCommunityScreen;
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  cardContainer: { width: "95%", margin: 5 },
   gradient: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  authContainer: {
-    width: "80%",
-    maxWidth: 400,
-    maxHeight: 400,
-    padding: 20,
   },
   buttonContainer: {
     marginTop: 10,
   },
 });
 
-export default AuthScreen;
+CreateCommunityScreen.navigationOptions = {
+  headerTitle: "Create Community",
+};

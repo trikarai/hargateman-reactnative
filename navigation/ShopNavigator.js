@@ -1,12 +1,47 @@
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import React from "react";
+import { Platform, View, AsyncStorage } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 
+import { Button } from "react-native-paper";
+
+// state 
+import { useDispatch } from "react-redux";
+import * as authAction from "../store/actions/auth";
+// navigation
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+
+// screen
 import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
+import AuthScreen from "../screens/user/AuthScreen";
+import SignupScreen from "../screens/guest/SignupScreen";
+import StartupScreen from "../screens/StartupScreen";
+import CommunityScreen from "../screens/community/CommunityScreen";
+import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
+import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
 
-import Colors from "../constants/colors";
-import { Platform } from "react-native";
+// other
+import Colors from "./../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
+
+const defaultNavOptions = {
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? Colors.primary : "",
+  },
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
+  },
+  headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
+};
 
 const ProductNavigator = createStackNavigator(
   {
@@ -15,21 +50,88 @@ const ProductNavigator = createStackNavigator(
     Cart: CartScreen,
   },
   {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: Platform.OS === "android" ? Colors.primary : "",
-      },
-      headerTitleStyle: {
-        fontFamily: "open-sans-bold",
-      },
-      headerBackTitleStyle: {
-        fontFamily: "open-sans",
-      },
-      headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const CommunityNavigator = createStackNavigator(
+  {
+    Community: CommunityScreen,
+    CommunityDetail: CommunityDetailScreen,
+    CreateCommunity: CreateCommunityScreen,
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <MaterialCommunityIcons
+          name="google-circles-communities"
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const ShopNavigator = createDrawerNavigator(
+  {
+    Communities: CommunityNavigator,
+    Products: ProductNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primary,
+    },
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      return (
+        <View style={{ flex: 1, paddingTop: 10 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerItems {...props} />
+            <Button
+              mode="text"
+              color={Colors.primary}
+              onPress={() => {
+                dispatch(authAction.logout());
+                AsyncStorage.removeItem("userData");
+                props.navigation.navigate("Auth");
+              }}
+            >
+              Logout
+            </Button>
+          </SafeAreaView>
+        </View>
+      );
     },
   }
 );
 
-const App = createAppContainer(ProductNavigator);
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: AuthScreen,
+    Signup: SignupScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const MainNavigator = createSwitchNavigator({
+  Startup: StartupScreen,
+  Auth: AuthNavigator,
+  Product: ShopNavigator,
+});
+
+const App = createAppContainer(MainNavigator);
 
 export default App;
