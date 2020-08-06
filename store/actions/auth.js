@@ -5,6 +5,8 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const AUTHENTICATE = "AUTHENTICATE";
 
+import baseUri from "../../config/baseUri";
+
 export const authenticate = (credentials, data) => {
   return {
     type: AUTHENTICATE,
@@ -15,21 +17,18 @@ export const authenticate = (credentials, data) => {
 
 export const signup = (name, phone, email, password) => {
   return async (dispatch) => {
-    const response = await fetch(
-      "http://10.0.2.2/bara-ht/public/api/guest/user-signup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          phone: phone,
-          name: name,
-        }),
-      }
-    );
+    const response = await fetch(baseUri.api + "/guest/user-signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        phone: phone,
+        name: name,
+      }),
+    });
 
     if (!response.ok) {
       const errorResData = await response.json();
@@ -52,19 +51,16 @@ export const signup = (name, phone, email, password) => {
 };
 export const login = (email, password) => {
   return async (dispatch) => {
-    const response = await fetch(
-      "http://10.0.2.2/bara-ht/public/api/guest/user-login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      }
-    );
+    const response = await fetch(baseUri.api + "/guest/user-login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
 
     if (!response.ok) {
       const errorResData = await response.json();
