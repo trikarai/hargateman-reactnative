@@ -1,11 +1,13 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useEffect, useReducer, useCallback } from "react";
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
   Button,
+  Alert,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Card from "../../components/UI/Card";
@@ -41,31 +43,41 @@ const formReducer = (state, action) => {
 };
 
 const SignupScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const dispatch = useDispatch();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
       password: "",
-      name: "",
+      firstName: "",
+      lastName: "",
       phone: "",
     },
     inputValidities: {
       email: false,
       password: false,
-      name: false,
+      firtsName: false,
+      lastName: false,
       phone: false,
     },
     formIsValid: false,
   });
-  const signupHandler = () => {
-    dispatch(
-      authActions.signup(
-        formState.inputValues.name,
-        formState.inputValues.phone,
-        formState.inputValues.email,
-        formState.inputValues.password
-      )
-    );
+  const signupHandler = async () => {
+    try {
+      await dispatch(
+        authActions.signup(
+          formState.inputValues.firstName,
+          formState.inputValues.lastName,
+          formState.inputValues.phone,
+          formState.inputValues.email,
+          formState.inputValues.password
+        )
+      );
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
   };
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
@@ -79,6 +91,12 @@ const SignupScreen = (props) => {
     [dispatchFormState]
   );
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occured", error, [{ text: "OK" }]);
+    }
+  }, [error]);
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -89,9 +107,18 @@ const SignupScreen = (props) => {
         <Card style={styles.authContainer}>
           <ScrollView>
             <Input
-              id="name"
-              label="Name"
-              errorText="Please Insert Name"
+              id="firstName"
+              label="First Name"
+              errorText="Please Insert First Name"
+              keyboardType="default"
+              onInputChange={inputChangeHandler}
+              initialValue=""
+              required
+            />
+            <Input
+              id="lastName"
+              label="Last Name"
+              errorText="Please Insert Last Name"
               keyboardType="default"
               onInputChange={inputChangeHandler}
               initialValue=""
@@ -130,11 +157,15 @@ const SignupScreen = (props) => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              <Button
-                title="Sign Up"
-                color={Colors.primary}
-                onPress={signupHandler}
-              />
+              {isLoading ? (
+                <ActivityIndicator size="large" color={Colors.primary} />
+              ) : (
+                <Button
+                  title="Sign Up"
+                  color={Colors.primary}
+                  onPress={signupHandler}
+                />
+              )}
             </View>
           </ScrollView>
         </Card>

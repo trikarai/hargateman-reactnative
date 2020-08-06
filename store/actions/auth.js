@@ -15,7 +15,7 @@ export const authenticate = (credentials, data) => {
   };
 };
 
-export const signup = (name, phone, email, password) => {
+export const signup = (firstName, lastName, phone, email, password) => {
   return async (dispatch) => {
     const response = await fetch(baseUri.api + "/guest/user-signup", {
       method: "POST",
@@ -26,7 +26,8 @@ export const signup = (name, phone, email, password) => {
         email: email,
         password: password,
         phone: phone,
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
       }),
     });
 
