@@ -1,10 +1,19 @@
 import Communities from "../../model/Communities";
+import CommunitiesApplications from "../../model/CommunitiesApplications";
+import CommunitiesMembership from "../../model/CommunitiesMembership";
 
 export const SET_COMMUNITIES = "SET_COMMUNITIES";
 export const DETAIL_COMMUNITIES = "DETAIL_COMMUNITIES";
 export const CREATE_COMMUNITIES = "CREATE_COMMUNITIES";
 
+export const SET_COMMUNITIES_APP = "SET_COMMUNITIES_APP";
+export const CANEL_COMMUNITIES_APP = "CREATE_COMMUNITIES";
+
+export const SET_COMMUNITIES_MEM = "SET_COMMUNITIES_MEM";
+
 import baseUri from "../../config/baseUri";
+
+import axios from "axios";
 
 export const fetchCommunities = () => {
   return async (dispatch, getState) => {
@@ -36,6 +45,68 @@ export const fetchCommunities = () => {
   };
 };
 
+export const fecthCommunityApplications = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.get(
+        baseUri.api + "/user/community-applications",
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      const array = resData.data.list;
+      const loadedCommunities = [];
+      // console.log(resData);
+      array.forEach((element) => {
+        loadedCommunities.push(
+          new CommunitiesApplications(
+            element.id,
+            element.community.id,
+            element.community.name,
+            element.notes
+          )
+        );
+      });
+      console.log(loadedCommunities);
+      dispatch({ type: SET_COMMUNITIES_APP, communities: loadedCommunities });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+export const fecthCommunityMemberships = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.get(
+        baseUri.api + "/user/community-memberships",
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      const array = resData.data.list;
+      const loadedCommunities = [];
+      array.forEach((element) => {
+        loadedCommunities.push(
+          new CommunitiesMembership(
+            element.community.id,
+            element.community.id,
+            element.community.name,
+            element.anAdmin,
+            element.joinTime,
+            element.active
+          )
+        );
+      });
+      console.log(loadedCommunities);
+      dispatch({ type: SET_COMMUNITIES_MEM, communities: loadedCommunities });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+
 export const detailCommunities = (id) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;
@@ -45,7 +116,6 @@ export const detailCommunities = (id) => {
       },
     });
     const resData = await response.json();
-    console.log(resData);
     dispatch({ type: DETAIL_COMMUNITIES, communities: resData.data });
   };
 };
@@ -77,5 +147,49 @@ export const createCommunities = (name) => {
 
     const resData = await response.json();
     dispatch({ type: CREATE_COMMUNITIES });
+  };
+};
+
+export const applyCommunities = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    const response = await axios.post(
+      baseUri.api + "/user/community-applications",
+      { communityId: id },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      let message = "Something went wrong!";
+      throw new Error(message);
+    }
+
+    console.log(response);
+  };
+};
+
+export const cancelCommunityApplication = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    const response = await axios.patch(
+      baseUri.api + "/user/community-applications/" + id + "/cancel",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      let message = "Something went wrong!";
+      throw new Error(message);
+    }
+    console.log(response);
+    dispatch({ type: null });
   };
 };

@@ -4,7 +4,7 @@ import SafeAreaView from "react-native-safe-area-view";
 
 import { Button } from "react-native-paper";
 
-// state 
+// state
 import { useDispatch } from "react-redux";
 import * as authAction from "../store/actions/auth";
 // navigation
@@ -16,10 +16,14 @@ import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
+
 import AuthScreen from "../screens/user/AuthScreen";
 import SignupScreen from "../screens/guest/SignupScreen";
 import StartupScreen from "../screens/StartupScreen";
+// community screen
 import CommunityScreen from "../screens/community/CommunityScreen";
+import CommunityApplicationsScreen from "../screens/community/CommunityApplicationsScreen";
+import CommunityMembershipScreen from "../screens/community/CommunityMembershipScreen";
 import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
 import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
 
@@ -27,8 +31,6 @@ import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
 import Colors from "./../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-
 
 const defaultNavOptions = {
   headerStyle: {
@@ -65,9 +67,11 @@ const ProductNavigator = createStackNavigator(
 
 const CommunityNavigator = createStackNavigator(
   {
+    CommunityMembership: CommunityMembershipScreen,
     Community: CommunityScreen,
     CommunityDetail: CommunityDetailScreen,
     CreateCommunity: CreateCommunityScreen,
+    CommunityApplications: CommunityApplicationsScreen,
   },
   {
     navigationOptions: {

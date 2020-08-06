@@ -1,29 +1,29 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FlatList, View, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet, Alert } from "react-native";
 import { ActivityIndicator, Button, Text } from "react-native-paper";
 
-import Colors from "../../constants/colors";
+import CommunityItem from "../../components/community/communityApplicationItem";
 import * as communitiesAction from "../../store/actions/community";
 
-import CommunityItem from "../../components/community/communityItem";
-
-import { Button as ButtonPaper } from "react-native-paper";
-
-const CommunityScreen = (props) => {
+const CommunityApplicationScreen = (props) => {
   const [isLoading, setIsloading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isError, setIsError] = useState(false);
+
   const communities = useSelector(
-    (state) => state.communities.availableCommunities
+    (state) => state.communities.applicationsCommunities
   );
+
+  const asu = JSON.stringify(communities);
+
   const dispatch = useDispatch();
 
   const loadCommunities = useCallback(async () => {
     setIsError(null);
     setIsRefreshing(true);
     try {
-      await dispatch(communitiesAction.fetchCommunities());
+      await dispatch(communitiesAction.fecthCommunityApplications());
     } catch (err) {
       setIsError(err.message);
     }
@@ -46,11 +46,18 @@ const CommunityScreen = (props) => {
     setIsloading(false);
   }, [dispatch, loadCommunities]);
 
-  const selectItemHandler = (id, name) => {
-    props.navigation.navigate("CommunityDetail", {
-      communityId: id,
-      communityName: name,
-    });
+  const cancelItemHandler = (id) => {
+    // Alert.alert("An Error Occured", id, [{ text: "OK" }]);
+    setIsError(null);
+    setIsRefreshing(true);
+    try {
+      dispatch(communitiesAction.cancelCommunityApplication(id));
+      props.navigation.navigate("CommunityApplications");
+      setIsRefreshing(false);
+    } catch (err) {
+      setIsError(err.message);
+      setIsRefreshing(false);
+    }
   };
 
   if (isError) {
@@ -63,7 +70,6 @@ const CommunityScreen = (props) => {
       </View>
     );
   }
-
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -76,17 +82,7 @@ const CommunityScreen = (props) => {
     );
   } else {
     return (
-      <View>
-        <View style={styles.create}>
-          <ButtonPaper
-            mode="contained"
-            onPress={() => {
-              props.navigation.navigate("CommunityApplications");
-            }}
-          >
-            Communities Applications
-          </ButtonPaper>
-        </View>
+      <View style={styles.create}>
         <FlatList
           onRefresh={loadCommunities}
           refreshing={isRefreshing}
@@ -96,11 +92,9 @@ const CommunityScreen = (props) => {
             <CommunityItem
               id={itemData.item.communityId}
               name={itemData.item.communityName}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.communityId,
-                  itemData.item.communityName
-                );
+              notes={itemData.item.communityNotes}
+              onCancel={() => {
+                cancelItemHandler(itemData.item.id);
               }}
             />
           )}
@@ -110,9 +104,11 @@ const CommunityScreen = (props) => {
   }
 };
 
-CommunityScreen.navigationOptions = (navData) => {
+export default CommunityApplicationScreen;
+
+CommunityApplicationScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Available Communities",
+    headerTitle: "Community Applications",
   };
 };
 
@@ -120,9 +116,4 @@ const styles = StyleSheet.create({
   create: {
     margin: 5,
   },
-  button: {
-    marginBottom: 10,
-  },
 });
-
-export default CommunityScreen;

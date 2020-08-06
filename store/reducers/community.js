@@ -1,9 +1,15 @@
-import { SET_COMMUNITIES, DETAIL_COMMUNITIES } from "../actions/community";
+import {
+  SET_COMMUNITIES,
+  SET_COMMUNITIES_APP,
+  SET_COMMUNITIES_MEM,
+  DETAIL_COMMUNITIES,
+} from "../actions/community";
 
-import Communities from "../../model/Communities";
 
 const initialState = {
   availableCommunities: [],
+  applicationsCommunities: [],
+  membershipCommunities: [],
   detailCommunity: {
     id: "",
     name: "",
@@ -20,10 +26,19 @@ export default (state = initialState, action) => {
       return {
         availableCommunities: action.communities,
       };
+    case SET_COMMUNITIES_APP:
+      return {
+        applicationsCommunities: action.communities,
+      };
+    case SET_COMMUNITIES_MEM:
+      return {
+        membershipCommunities: action.communities,
+      };
     case DETAIL_COMMUNITIES:
       return {
         detailCommunity: action.communities,
       };
+    default:
+      return state;
   }
-  return state;
 };

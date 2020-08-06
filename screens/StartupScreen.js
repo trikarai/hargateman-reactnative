@@ -20,10 +20,7 @@ const StartupScreen = (props) => {
 
       const credentials = transformData.credentials;
       const data = transformData.data;
-
-
       const validUntil = credentials.valid_until;
-      console.log(validUntil);
 
       if (validUntil < Math.round(new Date().getTime() / 1000)) {
         props.navigation.navigate("Auth");
