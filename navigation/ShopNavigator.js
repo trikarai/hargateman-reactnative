@@ -24,6 +24,7 @@ import StartupScreen from "../screens/StartupScreen";
 import CommunityScreen from "../screens/community/CommunityScreen";
 import CommunityApplicationsScreen from "../screens/community/CommunityApplicationsScreen";
 import CommunityMembershipScreen from "../screens/community/CommunityMembershipScreen";
+import CommunityMembershipDetailScreen from "../screens/community/membership/DetailScreen";
 import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
 import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
 
@@ -68,6 +69,7 @@ const ProductNavigator = createStackNavigator(
 const CommunityNavigator = createStackNavigator(
   {
     CommunityMembership: CommunityMembershipScreen,
+    CommunityMembershipDetail: CommunityMembershipDetailScreen,
     Community: CommunityScreen,
     CommunityDetail: CommunityDetailScreen,
     CreateCommunity: CreateCommunityScreen,

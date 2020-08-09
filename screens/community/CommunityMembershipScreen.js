@@ -49,7 +49,12 @@ const CommunityApplicationScreen = (props) => {
     setIsloading(false);
   }, [dispatch, loadCommunities]);
 
-  const leaveItemHandler = (id) => {};
+  const selectItemHandler = (id, name) => {
+    props.navigation.navigate("CommunityMembershipDetail", {
+      communityId: id,
+      communityName: name,
+    });
+  };
 
   if (isError) {
     return (
@@ -102,7 +107,7 @@ const CommunityApplicationScreen = (props) => {
               admin={itemData.item.anAdmin}
               active={itemData.item.active}
               onLeave={() => {
-                leaveItemHandler(itemData.item.id);
+                selectItemHandler(itemData.item.communityId, itemData.item.communityName);
               }}
             />
           )}

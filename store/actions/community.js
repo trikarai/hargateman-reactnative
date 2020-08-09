@@ -107,6 +107,27 @@ export const fecthCommunityMemberships = () => {
   };
 };
 
+export const leaveCommunities = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    const response = await axios.patch(
+      baseUri.api + "/user/community-memberships/" + id + "/leave",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      let message = "Something went wrong!";
+      throw new Error(message);
+    }
+    console.log(response);
+  };
+};
+
 export const detailCommunities = (id) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;

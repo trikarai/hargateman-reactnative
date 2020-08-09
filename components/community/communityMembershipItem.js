@@ -21,18 +21,24 @@ const CommunityItem = (props) => {
         <View>
           <Text style={styles.title}>{props.name}</Text>
         </View>
-        <View>
-          {props.active ? <Text>Active</Text>: <Text>Not Active</Text>}
-        </View>
-        <View>
-          {props.admin ? <Text>Admin</Text>: <Text>Not Admin</Text>}
+        <View style={styles.status}>
+          <View>
+            {props.active ? <Text>Active</Text> : <Text>Not Active</Text>}
+          </View>
+          <View>
+            {props.admin ? <Text>Admin</Text> : <Text>Not Admin</Text>}
+          </View>
         </View>
         <View style={styles.action}>
-          <Button
-            color={Colors.primary}
-            title="View Detail"
-            onPress={props.onLeave}
-          />
+          {props.active ? (
+            <Button
+              color={Colors.primary}
+              title="View Detail"
+              onPress={props.onLeave}
+            />
+          ) : (
+            <View></View>
+          )}
         </View>
         {/* </TouchableCmp> */}
       </View>
@@ -43,8 +49,12 @@ const CommunityItem = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
+  },
+  status: {
+    flex: 1,
+    flexDirection: "column",
   },
   title: {
     fontSize: 20,
