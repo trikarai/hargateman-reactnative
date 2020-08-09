@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
+import { Button } from "react-native-paper";
 import {
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -32,10 +33,25 @@ const CommunityItem = (props) => {
         <View style={styles.action}>
           {props.active ? (
             <Button
+              style={styles.button}
               color={Colors.primary}
-              title="View Detail"
+              mode="contained"
               onPress={props.onLeave}
-            />
+            >
+              View Detail
+            </Button>
+          ) : (
+            <View></View>
+          )}
+          {props.admin ? (
+            <Button
+              style={styles.button}
+              color={Colors.primary}
+              mode="contained"
+              onPress={props.onManage}
+            >
+              Manage
+            </Button>
           ) : (
             <View></View>
           )}
@@ -60,11 +76,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginVertical: 4,
   },
-  action: {},
+  action: {
+    marginTop: 10,
+  },
   cardContainer: {
     width: "95%",
     padding: 20,
     margin: 10,
+  },
+  button: {
+    margin: 3,
   },
 });
 

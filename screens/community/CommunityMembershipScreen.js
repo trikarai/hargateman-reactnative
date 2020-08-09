@@ -55,6 +55,12 @@ const CommunityApplicationScreen = (props) => {
       communityName: name,
     });
   };
+  const selectItemManageHandler = (id, name) => {
+    props.navigation.navigate("CommunityMembershipAdminDetail", {
+      communityId: id,
+      communityName: name,
+    });
+  };
 
   if (isError) {
     return (
@@ -108,6 +114,9 @@ const CommunityApplicationScreen = (props) => {
               active={itemData.item.active}
               onLeave={() => {
                 selectItemHandler(itemData.item.communityId, itemData.item.communityName);
+              }}
+              onManage={() => {
+                selectItemManageHandler(itemData.item.communityId, itemData.item.communityName);
               }}
             />
           )}
