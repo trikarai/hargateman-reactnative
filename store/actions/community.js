@@ -1,6 +1,9 @@
+// Class Model
 import Communities from "../../model/Communities";
 import CommunitiesApplications from "../../model/CommunitiesApplications";
 import CommunitiesMembership from "../../model/CommunitiesMembership";
+import CommunityApplicant from "../../model/CommunityApplicant";
+
 
 export const SET_COMMUNITIES = "SET_COMMUNITIES";
 export const DETAIL_COMMUNITIES = "DETAIL_COMMUNITIES";
@@ -10,6 +13,7 @@ export const SET_COMMUNITIES_APP = "SET_COMMUNITIES_APP";
 export const CANEL_COMMUNITIES_APP = "CREATE_COMMUNITIES";
 
 export const SET_COMMUNITIES_MEM = "SET_COMMUNITIES_MEM";
+export const SET_COMMUNITIES_APP_ADMIN = "SET_COMMUNITIES_APP_ADMIN";
 
 import baseUri from "../../config/baseUri";
 
@@ -100,6 +104,41 @@ export const fecthCommunityMemberships = () => {
       });
       console.log(loadedCommunities);
       dispatch({ type: SET_COMMUNITIES_MEM, communities: loadedCommunities });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+export const fecthCommunityApplicants = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.get(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          id +
+          "/community-applications",
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      const array = resData.data.list;
+      const loadedCommunities = [];
+      array.forEach((element) => {
+        loadedCommunities.push(
+          new CommunityApplicant(
+            element.id,
+            element.user.id,
+            element.user.name,
+            element.appliedTime
+          )
+        );
+      });
+      console.log(loadedCommunities);
+      dispatch({
+        type: SET_COMMUNITIES_APP_ADMIN,
+        communities: loadedCommunities,
+      });
     } catch (err) {
       console.log(err);
       throw err;

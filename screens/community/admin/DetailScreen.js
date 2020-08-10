@@ -54,7 +54,9 @@ const CommunityDetailScreen = (props) => {
               style={styles.button}
               color={Colors.primary}
               mode="contained"
-              onPress={() => {}}
+              onPress={() => {
+                props.navigation.navigate("CommunityApplicants", {})
+              }}
             >
               Members
             </Button>
@@ -62,7 +64,9 @@ const CommunityDetailScreen = (props) => {
               style={styles.button}
               color={Colors.primary}
               mode="contained"
-              onPress={() => {}}
+              onPress={() => {
+                props.navigation.navigate("CommunityApplicants",  {communityId: communityId});
+              }}
             >
               Applicants
             </Button>

@@ -1,16 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FlatList, View, StyleSheet, Alert } from "react-native";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
+import { FlatList, StyleSheet, Alert, View, Text } from "react-native";
+import {
+  Button,
+  Card,
+  Title,
+  Paragraph,
+  ActivityIndicator,
+} from "react-native-paper";
 
-import Colors from "../../constants/colors";
-import CommunityItem from "../../components/community/communityApplicationItem";
-import * as communitiesAction from "../../store/actions/community";
+import Colors from "../../../constants/colors";
+import * as communitiesAction from "../../../store/actions/community";
+import ApplicantItem from "../../../components/community/communityApplicantItem";
 
-const CommunityApplicationScreen = (props) => {
+const ApplicantsScreen = (props) => {
   const [isLoading, setIsloading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isError, setIsError] = useState(false);
+  const communityId = props.navigation.getParam("communityId");
 
   const communities = useSelector(
     (state) => state.communities.applicationsCommunities
@@ -20,52 +27,40 @@ const CommunityApplicationScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const loadCommunities = useCallback(async () => {
+  const loadApplicants = useCallback(async () => {
     setIsError(null);
     setIsRefreshing(true);
     try {
-      await dispatch(communitiesAction.fecthCommunityApplications());
+      await dispatch(communitiesAction.fecthCommunityApplicants(communityId));
     } catch (err) {
+      console.log(err);
       setIsError(err.message);
     }
     setIsRefreshing(false);
-  }, [dispatch, setIsloading, setIsError]);
+  }, [dispatch, setIsloading, setIsError, setIsRefreshing]);
 
   useEffect(() => {
     const willFocusSub = props.navigation.addListener(
       "willFocus",
-      loadCommunities
+      loadApplicants
     );
     return () => {
       willFocusSub.remove();
     };
-  }, [loadCommunities]);
+  }, [loadApplicants]);
 
   useEffect(() => {
     setIsloading(true);
-    loadCommunities().then(() => {});
-    setIsloading(false);
-  }, [dispatch, loadCommunities]);
-
-  const cancelItemHandler = (id) => {
-    // Alert.alert("An Error Occured", id, [{ text: "OK" }]);
-    setIsError(null);
-    setIsRefreshing(true);
-    try {
-      dispatch(communitiesAction.cancelCommunityApplication(id));
-      props.navigation.navigate("CommunityApplications");
-      setIsRefreshing(false);
-    } catch (err) {
-      setIsError(err.message);
-      setIsRefreshing(false);
-    }
-  };
+    loadApplicants().then(() => {
+      setIsloading(false);
+    });
+  }, [dispatch, loadApplicants]);
 
   if (isError) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>An Error Occured</Text>
-        <Button mode="contained" onPress={loadCommunities}>
+        <Button mode="contained" onPress={loadApplicants}>
           Try Again
         </Button>
       </View>
@@ -85,18 +80,17 @@ const CommunityApplicationScreen = (props) => {
     return (
       <View style={styles.create}>
         <FlatList
-          onRefresh={loadCommunities}
+          onRefresh={loadApplicants}
           refreshing={isRefreshing}
           data={communities}
           keyExtractor={(item) => item.id}
           renderItem={(itemData) => (
-            <CommunityItem
-              id={itemData.item.communityId}
-              name={itemData.item.communityName}
-              notes={itemData.item.communityNotes}
-              onCancel={() => {
-                cancelItemHandler(itemData.item.id);
-              }}
+            <ApplicantItem
+              id={itemData.item.id}
+              name={itemData.item.userName}
+              appliedTime={itemData.item.appliedTime}
+              onAccept={() => {}}
+              onReject={() => {}}
             />
           )}
         />
@@ -105,11 +99,11 @@ const CommunityApplicationScreen = (props) => {
   }
 };
 
-export default CommunityApplicationScreen;
+export default ApplicantsScreen;
 
-CommunityApplicationScreen.navigationOptions = (navData) => {
+ApplicantsScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Community Applications",
+    headerTitle: "Communities Applicants",
   };
 };
 
