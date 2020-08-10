@@ -17,6 +17,7 @@ const ApplicantsScreen = (props) => {
   const [isLoading, setIsloading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [error, setError] = useState();
   const communityId = props.navigation.getParam("communityId");
 
   const communities = useSelector(
@@ -50,11 +51,40 @@ const ApplicantsScreen = (props) => {
   }, [loadApplicants]);
 
   useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occured", error, [{ text: "OK" }]);
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
     setIsloading(true);
     loadApplicants().then(() => {
       setIsloading(false);
     });
   }, [dispatch, loadApplicants]);
+
+  const onAcceptHandler = (communityId, id) => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      dispatch(communitiesAction.acceptCommunityApplicants(communityId, id));
+      loadApplicants();
+    } catch (err) {
+      setError(err.message);
+      setIsRefreshing(false);
+    }
+  };
+  const onRejectHandler = (communityId, id) => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      dispatch(communitiesAction.rejectCommunityApplicants(communityId, id));
+      loadApplicants();
+    } catch (err) {
+      setError(err.message);
+      setIsRefreshing(false);
+    }
+  };
 
   if (isError) {
     return (
@@ -89,8 +119,12 @@ const ApplicantsScreen = (props) => {
               id={itemData.item.id}
               name={itemData.item.userName}
               appliedTime={itemData.item.appliedTime}
-              onAccept={() => {}}
-              onReject={() => {}}
+              onAccept={() => {
+                onAcceptHandler(communityId, itemData.item.id);
+              }}
+              onReject={() => {
+                onRejectHandler(communityId, itemData.item.id);
+              }}
             />
           )}
         />

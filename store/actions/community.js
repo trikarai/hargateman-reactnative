@@ -4,7 +4,6 @@ import CommunitiesApplications from "../../model/CommunitiesApplications";
 import CommunitiesMembership from "../../model/CommunitiesMembership";
 import CommunityApplicant from "../../model/CommunityApplicant";
 
-
 export const SET_COMMUNITIES = "SET_COMMUNITIES";
 export const DETAIL_COMMUNITIES = "DETAIL_COMMUNITIES";
 export const CREATE_COMMUNITIES = "CREATE_COMMUNITIES";
@@ -139,6 +138,47 @@ export const fecthCommunityApplicants = (id) => {
         type: SET_COMMUNITIES_APP_ADMIN,
         communities: loadedCommunities,
       });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+
+export const acceptCommunityApplicants = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          communityId +
+          "/community-applications/" +
+          id + "/accept", {}, 
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      console.log(resData);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+export const rejectCommunityApplicants = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          communityId +
+          "/community-applications/" +
+          id + "/reject", {},
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      console.log(resData);
     } catch (err) {
       console.log(err);
       throw err;
