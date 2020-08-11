@@ -63,12 +63,12 @@ const CreateCommunityScreen = (props) => {
     }
   }, [error]);
 
-  const createHandler = () => {
+  const createHandler = async () => {
     setError(null);
     setIsLoading(true);
     try {
-      dispatch(communitiesAction.createCommunities(formState.inputValues.name));
-      props.navigation.navigate("Community");
+      await dispatch(communitiesAction.createCommunities(formState.inputValues.name));
+      props.navigation.navigate("CommunityMembership");
     } catch (err) {
       setError(err.message);
       setIsLoading(false);

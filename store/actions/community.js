@@ -270,11 +270,8 @@ export const setAdminCommunityMember = (communityId, id) => {
         {},
         { headers: { Authorization: "Bearer " + token } }
       );
-      const resData = await response.data;
-      console.log(resData);
     } catch (err) {
       const errorResData = await err.response.data;
-      console.log(errorResData);
       let message = "Something went wrong!";
       const errorId = errorResData.meta.error_detail;
       if (errorId) {
@@ -323,19 +320,20 @@ export const detailCommunities = (id) => {
 export const createCommunities = (name) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;
-    const response = await fetch(baseUri.api + "/user/communities", {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-      }),
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    if (!response.ok) {
-      const errorResData = await response.json();
-      console.log(errorResData);
+    try {
+      const response = await axios.post(
+        baseUri.api + "/user/communities",
+        {
+          name: name,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (err) {
+      const errorResData = await err.response.data;
       let message = "Something went wrong!";
       const errorId = errorResData.meta.error_detail;
       if (errorId) {
@@ -344,9 +342,6 @@ export const createCommunities = (name) => {
         throw new Error(message);
       }
     }
-
-    const resData = await response.json();
-    dispatch({ type: CREATE_COMMUNITIES });
   };
 };
 
