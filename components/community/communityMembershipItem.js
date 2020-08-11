@@ -43,7 +43,7 @@ const CommunityItem = (props) => {
           ) : (
             <View></View>
           )}
-          {props.admin ? (
+          {props.admin && props.active ? (
             <Button
               style={styles.button}
               color={Colors.primary}
