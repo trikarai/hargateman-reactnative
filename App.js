@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from "react-redux";
 
 import { AppLoading } from "expo";
@@ -13,6 +13,14 @@ import cartReducer from "./store/reducers/carts";
 import authReducer from "./store/reducers/auth";
 
 import ShopNavigator from "./navigation/ShopNavigator";
+
+export const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#2ba84a',
+  },
+};
 
 const rootReducer = combineReducers({
   products: productsReducer,
