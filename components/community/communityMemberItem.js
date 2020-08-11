@@ -22,7 +22,7 @@ const CommunityMemberItem = (props) => {
         )}
       </Card.Content>
       <Card.Actions>
-        {!props.active ? (
+        {/* {!props.active ? (
           <Button
             style={{ marginEnd: 10 }}
             mode="contained"
@@ -32,7 +32,7 @@ const CommunityMemberItem = (props) => {
           </Button>
         ) : (
           <View></View>
-        )}
+        )} */}
         {!props.admin ? (
           <Button mode="outlined" onPress={props.onSetAdmin}>
             Set As Admin

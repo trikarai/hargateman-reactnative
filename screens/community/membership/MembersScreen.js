@@ -11,6 +11,7 @@ import MemberItem from "../../../components/community/communityMemberItem";
 const MembersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [error, setError] = useState();
   const communityId = props.navigation.getParam("communityId");
 
@@ -28,11 +29,13 @@ const MembersScreen = (props) => {
 
   const loadMembers = useCallback(async () => {
     setError(null);
+    setIsError(false);
     setIsRefreshing(true);
     try {
       await dispatch(communitiesAction.fecthCommunityMembers(communityId));
     } catch (err) {
       setError(err.message);
+      setIsError(true);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsRefreshing, setError]);
@@ -51,7 +54,34 @@ const MembersScreen = (props) => {
     });
   }, [dispatch, loadMembers, setIsLoading]);
 
-  if (error) {
+  const onSetAdminHandler = async (id) => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(
+        communitiesAction.setAdminCommunityMember(communityId, id)
+      );
+      loadMembers();
+    } catch (err) {
+      setError(err.message);
+      setIsRefreshing(false);
+    }
+  };
+  const onRemoveHandler = async (id) => {
+    // setError(null);
+    // setIsRefreshing(true);
+    // try {
+    //   await dispatch(
+    //     communitiesAction.setAdminCommunityMember(communityId, id)
+    //   );
+    //   loadMembers();
+    // } catch (err) {
+    //   setError(err.message);
+    //   setIsRefreshing(false);
+    // }
+  };
+
+  if (isError) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>An Error Occured</Text>
@@ -85,6 +115,12 @@ const MembersScreen = (props) => {
               admin={itemData.item.admin}
               active={itemData.item.active}
               joinTime={itemData.item.joinTime}
+              onSetAdmin={() => {
+                onSetAdminHandler(itemData.item.memberId);
+              }}
+              onRemove={() => {
+                onRemoveHandler(itemData.item.memberId);
+              }}
             />
           )}
         />

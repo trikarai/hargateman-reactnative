@@ -256,6 +256,35 @@ export const rejectCommunityApplicants = (communityId, id) => {
     }
   };
 };
+export const setAdminCommunityMember = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          communityId +
+          "/community-memberships/" +
+          id +
+          "/set-as-admin",
+        {},
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      console.log(resData);
+    } catch (err) {
+      const errorResData = await err.response.data;
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
 
 export const leaveCommunities = (id) => {
   return async (dispatch, getState) => {
