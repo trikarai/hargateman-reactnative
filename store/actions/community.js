@@ -148,21 +148,35 @@ export const fecthCommunityApplicants = (id) => {
 export const acceptCommunityApplicants = (communityId, id) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;
-    try {
-      const response = await axios.patch(
-        baseUri.api +
-          "/user/as-community-admin/" +
-          communityId +
-          "/community-applications/" +
-          id + "/accept", {}, 
-        { headers: { Authorization: "Bearer " + token } }
-      );
-      const resData = await response.data;
-      console.log(resData);
-    } catch (err) {
-      console.log(err);
-      throw err;
+    const response = await fetch(
+      baseUri.api +
+        "/user/as-community-admin/" +
+        communityId +
+        "/community-applications/" +
+        id +
+        "/accept",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: {},
+      }
+    );
+    if (!response.ok) {
+      const errorResData = await response.json();
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
     }
+    const resData = await response.json();
+    console.log(resData);
   };
 };
 export const rejectCommunityApplicants = (communityId, id) => {
@@ -174,14 +188,23 @@ export const rejectCommunityApplicants = (communityId, id) => {
           "/user/as-community-admin/" +
           communityId +
           "/community-applications/" +
-          id + "/reject", {},
+          id +
+          "/reject",
+        {},
         { headers: { Authorization: "Bearer " + token } }
       );
       const resData = await response.data;
       console.log(resData);
     } catch (err) {
-      console.log(err);
-      throw err;
+      const errorResData = await err.response.data;
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
     }
   };
 };

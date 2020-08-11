@@ -6,6 +6,7 @@ export const LOGOUT = "LOGOUT";
 export const AUTHENTICATE = "AUTHENTICATE";
 
 import baseUri from "../../config/baseUri";
+import axios from "axios";
 
 export const authenticate = (credentials, data) => {
   return {
@@ -83,6 +84,19 @@ export const login = (email, password) => {
       data: resData.data,
     });
     saveDataToStorage(resData.credentials, resData.data);
+  };
+};
+export const loginAxios = (email, password) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(baseUri.api + "/guest/user-login", {
+        email: email,
+        password: password,
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
   };
 };
 

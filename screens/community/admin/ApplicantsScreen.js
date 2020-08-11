@@ -63,22 +63,22 @@ const ApplicantsScreen = (props) => {
     });
   }, [dispatch, loadApplicants]);
 
-  const onAcceptHandler = (communityId, id) => {
+  const onAcceptHandler = async (communityId, id) => {
     setError(null);
     setIsRefreshing(true);
     try {
-      dispatch(communitiesAction.acceptCommunityApplicants(communityId, id));
+      await dispatch(communitiesAction.acceptCommunityApplicants(communityId, id));
       loadApplicants();
     } catch (err) {
       setError(err.message);
       setIsRefreshing(false);
     }
   };
-  const onRejectHandler = (communityId, id) => {
+  const onRejectHandler = async (communityId, id) => {
     setError(null);
     setIsRefreshing(true);
     try {
-      dispatch(communitiesAction.rejectCommunityApplicants(communityId, id));
+      await dispatch(communitiesAction.rejectCommunityApplicants(communityId, id));
       loadApplicants();
     } catch (err) {
       setError(err.message);
