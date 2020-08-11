@@ -9,6 +9,9 @@ import {
   ActivityIndicator,
   Alert,
   ImageBackground,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -97,92 +100,96 @@ const AuthScreen = (props) => {
   );
   return (
     <KeyboardAvoidingView
-      behavior="height"
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
       keyboardVerticalOffset={1}
       style={styles.screen}
     >
-      <ImageBackground
-        source={require("../../assets/Background_1.png")}
-        resizeMode="repeat"
-        style={styles.background}
-      >
-        <View
-          style={{
-            alignItems: "center",
-          }}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground
+          source={require("../../assets/Background_1.png")}
+          resizeMode="cover"
+          style={styles.background}
         >
-          <Image
-            source={require("../../assets/logo-b.png")}
-            style={styles.logo}
-          />
-        </View>
-
-        <View style={styles.authContainer}>
-          <Input
-            id="email"
-            label="E-Mail"
-            keyboardType="email-address"
-            required
-            email
-            autoCapitalize="none"
-            errorText="Please enter a valid email address."
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            mode="outlined"
-          />
-          <Input
-            style={styles.topInput}
-            id="password"
-            label="Password"
-            keyboardType="default"
-            secureTextEntry
-            required
-            minLength={5}
-            autoCapitalize="none"
-            errorText="Please enter a valid password."
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            mode="outlined"
-          />
-          <View style={styles.forgotPassword}>
-            <Text style={styles.label}>Forgot your password?</Text>
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../assets/logo-b.png")}
+              style={styles.logo}
+            />
           </View>
-          <View style={styles.buttonContainer}>
-            {isLoading ? (
-              <ActivityIndicator size="large" color={Colors.primary} />
+
+          <View style={styles.authContainer}>
+            <Input
+              id="email"
+              label="E-Mail"
+              keyboardType="email-address"
+              required
+              email
+              autoCapitalize="none"
+              errorText="Please enter a valid email address."
+              onInputChange={inputChangeHandler}
+              initialValue=""
+              mode="outlined"
+              returnKeyType="next"
+            />
+            <Input
+              ref={(input) => {}}
+              style={styles.topInput}
+              id="password"
+              label="Password"
+              keyboardType="default"
+              secureTextEntry
+              required
+              minLength={5}
+              autoCapitalize="none"
+              errorText="Please enter a valid password."
+              onInputChange={inputChangeHandler}
+              initialValue=""
+              mode="outlined"
+            />
+            <View style={styles.forgotPassword}>
+              <Text style={styles.label}>Forgot your password?</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color={Colors.primary} />
+              ) : (
+                <Button
+                  style={{
+                    height: 50,
+                    justifyContent: "center",
+                  }}
+                  mode="contained"
+                  color={Colors.primary}
+                  onPress={loginHandler}
+                >
+                  login
+                </Button>
+              )}
+            </View>
+            {!isLoading ? (
+              <View style={styles.row}>
+                <Text style={styles.label}>Don’t have an account? </Text>
+                <Button
+                  style={styles.signap}
+                  color={Colors.primary}
+                  mode="text"
+                  onPress={() => {
+                    props.navigation.navigate("Signup");
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </View>
             ) : (
-              <Button
-                style={{
-                  height: 50,
-                  justifyContent: "center",
-                }}
-                mode="contained"
-                color={Colors.primary}
-                onPress={loginHandler}
-              >
-                login
-              </Button>
+              <View></View>
             )}
           </View>
-          {!isLoading ? (
-            <View style={styles.row}>
-              <Text style={styles.label}>Don’t have an account? </Text>
-              <Button
-                style={styles.signap}
-                color={Colors.primary}
-                mode="text"
-                onPress={() => {
-                  props.navigation.navigate("Signup");
-                }}
-              >
-                Sign Up
-              </Button>
-            </View>
-          ) : (
-            <View></View>
-          )}
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
