@@ -8,7 +8,7 @@ import {
 import Colors from "../../constants/colors";
 import Card from "../../components/UI/Card";
 
-const CommunityItem = (props) => {
+const CommunityApplicantItem = (props) => {
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -18,49 +18,39 @@ const CommunityItem = (props) => {
   return (
     <Card style={styles.cardContainer}>
       <View style={styles.screen}>
-        {/* <TouchableCmp onPress={props.onViewDetail} useForegroud> */}
         <View>
           <Text style={styles.title}>{props.name}</Text>
         </View>
         <View style={styles.status}>
           <View>
-            {props.active ? <Text>Active</Text> : <Text>Not Active</Text>}
-          </View>
-          <View>
-            {props.admin ? <Text>Admin</Text> : <Text>Not Admin</Text>}
+            <Text> {props.appliedTime}</Text>
           </View>
         </View>
         <View style={styles.action}>
-          {props.active ? (
-            <Button
-              style={styles.button}
-              color={Colors.primary}
-              mode="contained"
-              onPress={props.onLeave}
-            >
-              View Detail
-            </Button>
-          ) : (
-            <View></View>
-          )}
-          {props.admin && props.active ? (
-            <Button
-              style={styles.button}
-              color={Colors.primary}
-              mode="contained"
-              onPress={props.onManage}
-            >
-              Manage
-            </Button>
-          ) : (
-            <View></View>
-          )}
+          <Button
+            style={styles.button}
+            color={Colors.primary}
+            mode="contained"
+            onPress={props.onAccept}
+          >
+            Accept
+          </Button>
+
+          <Button
+            style={styles.button}
+            color={Colors.primary}
+            mode="contained"
+            onPress={props.onReject}
+          >
+            Reject
+          </Button>
         </View>
-        {/* </TouchableCmp> */}
       </View>
     </Card>
   );
 };
+
+export default CommunityApplicantItem;
 
 const styles = StyleSheet.create({
   screen: {
@@ -88,5 +78,3 @@ const styles = StyleSheet.create({
     margin: 3,
   },
 });
-
-export default CommunityItem;

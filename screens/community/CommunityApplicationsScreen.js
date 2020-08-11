@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FlatList, View, StyleSheet, Alert } from "react-native";
 import { ActivityIndicator, Button, Text } from "react-native-paper";
 
+import Colors from "../../constants/colors";
 import CommunityItem from "../../components/community/communityApplicationItem";
 import * as communitiesAction from "../../store/actions/community";
 

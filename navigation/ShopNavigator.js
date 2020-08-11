@@ -24,8 +24,13 @@ import StartupScreen from "../screens/StartupScreen";
 import CommunityScreen from "../screens/community/CommunityScreen";
 import CommunityApplicationsScreen from "../screens/community/CommunityApplicationsScreen";
 import CommunityMembershipScreen from "../screens/community/CommunityMembershipScreen";
+import CommunityMembershipDetailScreen from "../screens/community/membership/DetailScreen";
+import CommunityMembershipAdminDetailScreen from "../screens/community/admin/DetailScreen";
 import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
 import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
+// community as admin
+import CommunityApplicantsScreen from "../screens/community/admin/ApplicantsScreen";
+
 
 // other
 import Colors from "./../constants/colors";
@@ -68,10 +73,14 @@ const ProductNavigator = createStackNavigator(
 const CommunityNavigator = createStackNavigator(
   {
     CommunityMembership: CommunityMembershipScreen,
+    CommunityMembershipDetail: CommunityMembershipDetailScreen,
+    CommunityMembershipAdminDetail: CommunityMembershipAdminDetailScreen,
     Community: CommunityScreen,
     CommunityDetail: CommunityDetailScreen,
     CreateCommunity: CreateCommunityScreen,
     CommunityApplications: CommunityApplicationsScreen,
+    // admin
+    CommunityApplicants : CommunityApplicantsScreen
   },
   {
     navigationOptions: {

@@ -1,6 +1,8 @@
+// Class Model
 import Communities from "../../model/Communities";
 import CommunitiesApplications from "../../model/CommunitiesApplications";
 import CommunitiesMembership from "../../model/CommunitiesMembership";
+import CommunityApplicant from "../../model/CommunityApplicant";
 
 export const SET_COMMUNITIES = "SET_COMMUNITIES";
 export const DETAIL_COMMUNITIES = "DETAIL_COMMUNITIES";
@@ -10,6 +12,7 @@ export const SET_COMMUNITIES_APP = "SET_COMMUNITIES_APP";
 export const CANEL_COMMUNITIES_APP = "CREATE_COMMUNITIES";
 
 export const SET_COMMUNITIES_MEM = "SET_COMMUNITIES_MEM";
+export const SET_COMMUNITIES_APP_ADMIN = "SET_COMMUNITIES_APP_ADMIN";
 
 import baseUri from "../../config/baseUri";
 
@@ -104,6 +107,126 @@ export const fecthCommunityMemberships = () => {
       console.log(err);
       throw err;
     }
+  };
+};
+export const fecthCommunityApplicants = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.get(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          id +
+          "/community-applications",
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      const array = resData.data.list;
+      const loadedCommunities = [];
+      array.forEach((element) => {
+        loadedCommunities.push(
+          new CommunityApplicant(
+            element.id,
+            element.user.id,
+            element.user.name,
+            element.appliedTime
+          )
+        );
+      });
+      console.log(loadedCommunities);
+      dispatch({
+        type: SET_COMMUNITIES_APP_ADMIN,
+        communities: loadedCommunities,
+      });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+};
+
+export const acceptCommunityApplicants = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    const response = await fetch(
+      baseUri.api +
+        "/user/as-community-admin/" +
+        communityId +
+        "/community-applications/" +
+        id +
+        "/accept",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: {},
+      }
+    );
+    if (!response.ok) {
+      const errorResData = await response.json();
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+    const resData = await response.json();
+    console.log(resData);
+  };
+};
+export const rejectCommunityApplicants = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          communityId +
+          "/community-applications/" +
+          id +
+          "/reject",
+        {},
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      console.log(resData);
+    } catch (err) {
+      const errorResData = await err.response.data;
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
+
+export const leaveCommunities = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    const response = await axios.patch(
+      baseUri.api + "/user/community-memberships/" + id + "/leave",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      let message = "Something went wrong!";
+      throw new Error(message);
+    }
+    console.log(response);
   };
 };
 

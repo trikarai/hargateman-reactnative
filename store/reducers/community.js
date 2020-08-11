@@ -1,10 +1,10 @@
 import {
   SET_COMMUNITIES,
   SET_COMMUNITIES_APP,
+  SET_COMMUNITIES_APP_ADMIN,
   SET_COMMUNITIES_MEM,
   DETAIL_COMMUNITIES,
 } from "../actions/community";
-
 
 const initialState = {
   availableCommunities: [],
@@ -27,6 +27,10 @@ export default (state = initialState, action) => {
         availableCommunities: action.communities,
       };
     case SET_COMMUNITIES_APP:
+      return {
+        applicationsCommunities: action.communities,
+      };
+    case SET_COMMUNITIES_APP_ADMIN:
       return {
         applicationsCommunities: action.communities,
       };
