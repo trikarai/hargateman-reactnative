@@ -8,6 +8,7 @@ import HeaderButton from "./../../components/UI/HeaderButton";
 
 import CommunityItem from "../../components/community/communityMembershipItem";
 import * as communitiesAction from "../../store/actions/community";
+import colors from "../../constants/colors";
 
 const CommunityApplicationScreen = (props) => {
   const [isLoading, setIsloading] = useState(false);
@@ -86,7 +87,9 @@ const CommunityApplicationScreen = (props) => {
     return (
       <View style={styles.create}>
         <Button
+          style={{ marginBottom: 10 }}
           mode="contained"
+          color={colors.primary}
           onPress={() => {
             props.navigation.navigate("CreateCommunity");
           }}
@@ -94,7 +97,9 @@ const CommunityApplicationScreen = (props) => {
           Create Communities
         </Button>
         <Button
+          style={{ marginBottom: 10 }}
           mode="contained"
+          color={colors.primary}
           onPress={() => {
             props.navigation.navigate("Community");
           }}
@@ -113,10 +118,16 @@ const CommunityApplicationScreen = (props) => {
               admin={itemData.item.anAdmin}
               active={itemData.item.active}
               onLeave={() => {
-                selectItemHandler(itemData.item.communityId, itemData.item.communityName);
+                selectItemHandler(
+                  itemData.item.communityId,
+                  itemData.item.communityName
+                );
               }}
               onManage={() => {
-                selectItemManageHandler(itemData.item.communityId, itemData.item.communityName);
+                selectItemManageHandler(
+                  itemData.item.communityId,
+                  itemData.item.communityName
+                );
               }}
             />
           )}
