@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
 import {
   ScrollView,
+  Text,
+  Image,
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
   ActivityIndicator,
   Alert,
+  ImageBackground,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+
+import { Button } from 'react-native-paper';
 
 import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
@@ -16,6 +20,7 @@ import Colors from "../../constants/colors";
 
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/auth";
+import { BorderlessButton } from "react-native-gesture-handler";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -92,14 +97,28 @@ const AuthScreen = (props) => {
     [dispatchFormState]
   );
   return (
+
     <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={50}
+      behavior="height"
+      keyboardVerticalOffset={1}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
-        <Card style={styles.authContainer}>
-          <ScrollView>
+     <ImageBackground
+      source={require('../../assets/Background_1.png')}
+      resizeMode="repeat"
+      style={styles.background}
+    >
+      {/* <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}> */}
+        {/* <Card style={styles.authContainer}> */}
+
+          <View style={{
+            alignItems: 'center'
+          }}>
+          <Image source={require('../../assets/logo-b.png')} style={styles.logo} />
+          </View>
+
+          <View style={styles.authContainer}>
+
             <Input
               id="email"
               label="E-Mail"
@@ -110,52 +129,83 @@ const AuthScreen = (props) => {
               errorText="Please enter a valid email address."
               onInputChange={inputChangeHandler}
               initialValue=""
+              mode="outlined"
+              underlineColor={Colors.primary}
             />
-            <Input
+            <Input style={styles.topInput}
               id="password"
               label="Password"
               keyboardType="default"
-              secureTextEntry
+                secureTextEntry
               required
               minLength={5}
               autoCapitalize="none"
               errorText="Please enter a valid password."
               onInputChange={inputChangeHandler}
               initialValue=""
+              mode="outlined"
             />
+            <View style={styles.forgotPassword}>
+              {/* <TouchableOpacity
+                onPress={() => navigation.navigate('ForgotPasswordScreen')}
+              > */}
+                <Text style={styles.label}>Forgot your password?</Text>
+                {/* </TouchableOpacity> */}
+            </View>
             <View style={styles.buttonContainer}>
               {isLoading ? (
                 <ActivityIndicator size="large" color={Colors.primary} />
               ) : (
                 <Button
-                  title="Login"
+                  style={{
+                    height: 50,
+                    justifyContent: 'center',
+                  }}
+                  mode="contained"x
                   color={Colors.primary}
                   onPress={loginHandler}
-                />
+                >login
+                </Button>
               )}
             </View>
             {!isLoading ? (
-              <View style={styles.buttonContainer}>
+              // <View style={styles.buttonContainer}>
+              //   <Button
+              //     title="Switch to Sign Up"
+              //     color={Colors.accent}
+              //     onPress={() => {
+              //       props.navigation.navigate("Signup");
+              //     }}
+              //   />
+              // </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Don’t have an account? </Text>
                 <Button
-                  title="Switch to Sign Up"
-                  color={Colors.accent}
+                  style={styles.signap}
+                  color={Colors.primary}
+                  mode="text"
                   onPress={() => {
-                    props.navigation.navigate("Signup");
-                  }}
-                />
+                          props.navigation.navigate("Signup");
+                        }}
+                >
+                  Sign Up
+                </Button>
               </View>
             ) : (
               <View></View>
             )}
-          </ScrollView>
-        </Card>
-      </LinearGradient>
+          </View>
+        {/* </Card> */}
+      {/* </LinearGradient> */}
+    </ImageBackground>
     </KeyboardAvoidingView>
+
   );
 };
 
 AuthScreen.navigationOptions = {
-  headerTitle: "Login Harga Teman",
+  header: null,
+  // headerTitle: "",
 };
 
 const styles = StyleSheet.create({
@@ -168,13 +218,45 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   authContainer: {
-    width: "80%",
-    maxWidth: 400,
-    maxHeight: 400,
-    padding: 20,
+    // maxWidth: 400,
+    // maxHeight: 400,
+    flex:1,
+    paddingLeft: 35,
+    paddingRight: 35,
+    // marginTop: 100,
   },
   buttonContainer: {
     marginTop: 10,
+  },
+  topInput: {
+    marginTop: 20,
+  },
+  forgotPassword: {
+    width: '100%',
+    alignItems: 'flex-end',
+    marginBottom: 24,
+  },
+  label: {
+    color: '#6d6d6d',
+    marginTop: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+    marginLeft: "20%",
+  },
+  signap: {
+    marginTop: 2,
+  },
+  logo: {
+    width: 192,
+    height: 90,
+    marginBottom: 45,
+    marginTop: 80,
+  },
+  background: {
+    flex: 1,
+    width: '100%',
   },
 });
 
