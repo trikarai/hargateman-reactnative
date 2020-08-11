@@ -61,7 +61,7 @@ const ApplicantsScreen = (props) => {
     loadApplicants().then(() => {
       setIsloading(false);
     });
-  }, [dispatch, loadApplicants]);
+  }, [dispatch, loadApplicants, setIsloading]);
 
   const onAcceptHandler = async (communityId, id) => {
     setError(null);

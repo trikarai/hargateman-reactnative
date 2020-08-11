@@ -30,7 +30,7 @@ import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
 import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
 // community as admin
 import CommunityApplicantsScreen from "../screens/community/admin/ApplicantsScreen";
-
+import CommunityMembersScreen from "../screens/community/membership/MembersScreen";
 
 // other
 import Colors from "./../constants/colors";
@@ -80,7 +80,8 @@ const CommunityNavigator = createStackNavigator(
     CreateCommunity: CreateCommunityScreen,
     CommunityApplications: CommunityApplicationsScreen,
     // admin
-    CommunityApplicants : CommunityApplicantsScreen
+    CommunityApplicants: CommunityApplicantsScreen,
+    CommunityMembers: CommunityMembersScreen,
   },
   {
     navigationOptions: {

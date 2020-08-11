@@ -3,7 +3,9 @@ import Communities from "../../model/Communities";
 import CommunitiesApplications from "../../model/CommunitiesApplications";
 import CommunitiesMembership from "../../model/CommunitiesMembership";
 import CommunityApplicant from "../../model/CommunityApplicant";
+import CommunityMember from "../../model/CommunityMember";
 
+// action set
 export const SET_COMMUNITIES = "SET_COMMUNITIES";
 export const DETAIL_COMMUNITIES = "DETAIL_COMMUNITIES";
 export const CREATE_COMMUNITIES = "CREATE_COMMUNITIES";
@@ -11,7 +13,8 @@ export const CREATE_COMMUNITIES = "CREATE_COMMUNITIES";
 export const SET_COMMUNITIES_APP = "SET_COMMUNITIES_APP";
 export const CANEL_COMMUNITIES_APP = "CREATE_COMMUNITIES";
 
-export const SET_COMMUNITIES_MEM = "SET_COMMUNITIES_MEM";
+export const SET_COMMUNITIES_MEMBERSHIP = "SET_COMMUNITIES_MEMBERSHIP";
+export const SET_COMMUNITIES_MEMBERS = "SET_COMMUNITIES_MEMBERS";
 export const SET_COMMUNITIES_APP_ADMIN = "SET_COMMUNITIES_APP_ADMIN";
 
 import baseUri from "../../config/baseUri";
@@ -70,7 +73,7 @@ export const fecthCommunityApplications = () => {
           )
         );
       });
-      console.log(loadedCommunities);
+      // console.log(loadedCommunities);
       dispatch({ type: SET_COMMUNITIES_APP, communities: loadedCommunities });
     } catch (err) {
       console.log(err);
@@ -101,8 +104,10 @@ export const fecthCommunityMemberships = () => {
           )
         );
       });
-      console.log(loadedCommunities);
-      dispatch({ type: SET_COMMUNITIES_MEM, communities: loadedCommunities });
+      dispatch({
+        type: SET_COMMUNITIES_MEMBERSHIP,
+        communities: loadedCommunities,
+      });
     } catch (err) {
       console.log(err);
       throw err;
@@ -133,7 +138,6 @@ export const fecthCommunityApplicants = (id) => {
           )
         );
       });
-      console.log(loadedCommunities);
       dispatch({
         type: SET_COMMUNITIES_APP_ADMIN,
         communities: loadedCommunities,
@@ -141,6 +145,50 @@ export const fecthCommunityApplicants = (id) => {
     } catch (err) {
       console.log(err);
       throw err;
+    }
+  };
+};
+
+export const fecthCommunityMembers = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.get(
+        baseUri.api +
+          "/user/as-community-member/" +
+          id +
+          "/community-memberships",
+        { headers: { Authorization: "Bearer " + token } }
+      );
+      const resData = await response.data;
+      const array = resData.data.list;
+      const loadedMembers = [];
+      array.forEach((element) => {
+        loadedMembers.push(
+          new CommunityMember(
+            element.id,
+            element.member.id,
+            element.member.name,
+            element.joinTime,
+            element.anAdmin,
+            element.active
+          )
+        );
+      });
+      dispatch({
+        type: SET_COMMUNITIES_MEMBERS,
+        communities: loadedMembers,
+      });
+    } catch (err) {
+      const errorResData = await err.response.data;
+      console.log(errorResData);
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
     }
   };
 };
