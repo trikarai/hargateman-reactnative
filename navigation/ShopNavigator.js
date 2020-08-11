@@ -17,7 +17,7 @@ import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
 
-import AuthScreen from "../screens/user/AuthScreen";
+import AuthScreen from "../screens/guest/AuthScreen";
 import SignupScreen from "../screens/guest/SignupScreen";
 import StartupScreen from "../screens/StartupScreen";
 // community screen
