@@ -1,5 +1,7 @@
 import React, { useReducer, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { TextInput } from 'react-native-paper';
+import { theme } from "../../App";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
 const INPUT_BLUR = "INPUT_BLUR";
@@ -62,13 +64,15 @@ const Input = (props) => {
 
   return (
     <View style={styles.formControl}>
-      <Text style={styles.label}>{props.label}</Text>
+      {/* <Text style={styles.label}>{props.label}</Text> */}
       <TextInput
         {...props}
-        style={styles.input}
+        theme={theme}
+        // style={styles.input}
         value={inputState.value}
         onChangeText={textCangeHandler}
         onBlur={lostFocusHandler}
+        mode="outlined"
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
