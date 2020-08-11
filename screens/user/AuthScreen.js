@@ -12,9 +12,8 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { Button } from 'react-native-paper';
+import { Button } from "react-native-paper";
 
-import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
 import Colors from "../../constants/colors";
 
@@ -97,115 +96,99 @@ const AuthScreen = (props) => {
     [dispatchFormState]
   );
   return (
-
     <KeyboardAvoidingView
       behavior="height"
       keyboardVerticalOffset={1}
       style={styles.screen}
     >
-     <ImageBackground
-      source={require('../../assets/Background_1.png')}
-      resizeMode="repeat"
-      style={styles.background}
-    >
-      {/* <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}> */}
-        {/* <Card style={styles.authContainer}> */}
+      <ImageBackground
+        source={require("../../assets/Background_1.png")}
+        resizeMode="repeat"
+        style={styles.background}
+      >
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={require("../../assets/logo-b.png")}
+            style={styles.logo}
+          />
+        </View>
 
-          <View style={{
-            alignItems: 'center'
-          }}>
-          <Image source={require('../../assets/logo-b.png')} style={styles.logo} />
+        <View style={styles.authContainer}>
+          <Input
+            id="email"
+            label="E-Mail"
+            keyboardType="email-address"
+            required
+            email
+            autoCapitalize="none"
+            errorText="Please enter a valid email address."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+            mode="outlined"
+          />
+          <Input
+            style={styles.topInput}
+            id="password"
+            label="Password"
+            keyboardType="default"
+            secureTextEntry
+            required
+            minLength={5}
+            autoCapitalize="none"
+            errorText="Please enter a valid password."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+            mode="outlined"
+          />
+          <View style={styles.forgotPassword}>
+            <Text style={styles.label}>Forgot your password?</Text>
           </View>
-
-          <View style={styles.authContainer}>
-
-            <Input
-              id="email"
-              label="E-Mail"
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              errorText="Please enter a valid email address."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-              mode="outlined"
-              underlineColor={Colors.primary}
-            />
-            <Input style={styles.topInput}
-              id="password"
-              label="Password"
-              keyboardType="default"
-                secureTextEntry
-              required
-              minLength={5}
-              autoCapitalize="none"
-              errorText="Please enter a valid password."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-              mode="outlined"
-            />
-            <View style={styles.forgotPassword}>
-              {/* <TouchableOpacity
-                onPress={() => navigation.navigate('ForgotPasswordScreen')}
-              > */}
-                <Text style={styles.label}>Forgot your password?</Text>
-                {/* </TouchableOpacity> */}
-            </View>
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="large" color={Colors.primary} />
-              ) : (
-                <Button
-                  style={{
-                    height: 50,
-                    justifyContent: 'center',
-                  }}
-                  mode="contained"x
-                  color={Colors.primary}
-                  onPress={loginHandler}
-                >login
-                </Button>
-              )}
-            </View>
-            {!isLoading ? (
-              // <View style={styles.buttonContainer}>
-              //   <Button
-              //     title="Switch to Sign Up"
-              //     color={Colors.accent}
-              //     onPress={() => {
-              //       props.navigation.navigate("Signup");
-              //     }}
-              //   />
-              // </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Don’t have an account? </Text>
-                <Button
-                  style={styles.signap}
-                  color={Colors.primary}
-                  mode="text"
-                  onPress={() => {
-                          props.navigation.navigate("Signup");
-                        }}
-                >
-                  Sign Up
-                </Button>
-              </View>
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="large" color={Colors.primary} />
             ) : (
-              <View></View>
+              <Button
+                style={{
+                  height: 50,
+                  justifyContent: "center",
+                }}
+                mode="contained"
+                color={Colors.primary}
+                onPress={loginHandler}
+              >
+                login
+              </Button>
             )}
           </View>
-        {/* </Card> */}
-      {/* </LinearGradient> */}
-    </ImageBackground>
+          {!isLoading ? (
+            <View style={styles.row}>
+              <Text style={styles.label}>Don’t have an account? </Text>
+              <Button
+                style={styles.signap}
+                color={Colors.primary}
+                mode="text"
+                onPress={() => {
+                  props.navigation.navigate("Signup");
+                }}
+              >
+                Sign Up
+              </Button>
+            </View>
+          ) : (
+            <View></View>
+          )}
+        </View>
+      </ImageBackground>
     </KeyboardAvoidingView>
-
   );
 };
 
 AuthScreen.navigationOptions = {
-  header: null,
-  // headerTitle: "",
+  header: () => null,
 };
 
 const styles = StyleSheet.create({
@@ -220,7 +203,7 @@ const styles = StyleSheet.create({
   authContainer: {
     // maxWidth: 400,
     // maxHeight: 400,
-    flex:1,
+    flex: 1,
     paddingLeft: 35,
     paddingRight: 35,
     // marginTop: 100,
@@ -232,16 +215,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
+    width: "100%",
+    alignItems: "flex-end",
     marginBottom: 24,
   },
   label: {
-    color: '#6d6d6d',
+    color: "#6d6d6d",
     marginTop: 10,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 4,
     marginLeft: "20%",
   },
@@ -256,7 +239,7 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
 });
 
