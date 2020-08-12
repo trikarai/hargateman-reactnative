@@ -72,7 +72,7 @@ const Input = (props) => {
         value={inputState.value}
         onChangeText={textCangeHandler}
         onBlur={lostFocusHandler}
-        mode="outlined"
+        mode="flat"
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
