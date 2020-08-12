@@ -4,11 +4,13 @@ import {
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
   Alert,
+  Image,
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+
+import { Button } from "react-native-paper";
 
 import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
@@ -99,13 +101,17 @@ const SignupScreen = (props) => {
 
   return (
     <KeyboardAvoidingView
-      behavior="padding"
+      behavior="height"
       keyboardVerticalOffset={50}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
-        <Card style={styles.authContainer}>
-          <ScrollView>
+      {/* <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}> */}
+        {/* <Card style={styles.authContainer}> */}
+          <ScrollView  style={styles.authContainer}>
+          <Image
+              source={require("../../assets/signup.png")}
+              style={styles.logo}
+            />
             <Input
               id="firstName"
               label="First Name"
@@ -114,8 +120,12 @@ const SignupScreen = (props) => {
               onInputChange={inputChangeHandler}
               initialValue=""
               required
+              dense
             />
             <Input
+              style={{
+                marginTop:15,
+              }}
               id="lastName"
               label="Last Name"
               errorText="Please Insert Last Name"
@@ -123,17 +133,25 @@ const SignupScreen = (props) => {
               onInputChange={inputChangeHandler}
               initialValue=""
               required
+              dense
             />
             <Input
+              style={{
+                marginTop:15,
+              }}
               id="phone"
-              label="phone"
+              label="Phone"
               errorText="Please Phone Number"
               keyboardType="phone-pad"
               onInputChange={inputChangeHandler}
               initialValue=""
               required
+              dense
             />
             <Input
+              style={{
+                marginTop:15,
+              }}
               id="email"
               label="E-Mail"
               keyboardType="email-address"
@@ -143,8 +161,12 @@ const SignupScreen = (props) => {
               errorText="Please enter a valid email address."
               onInputChange={inputChangeHandler}
               initialValue=""
+              dense
             />
             <Input
+              style={{
+                marginTop:15,
+              }}
               id="password"
               label="Password"
               keyboardType="default"
@@ -155,21 +177,29 @@ const SignupScreen = (props) => {
               errorText="Please enter a valid password."
               onInputChange={inputChangeHandler}
               initialValue=""
+              dense
             />
             <View style={styles.buttonContainer}>
               {isLoading ? (
                 <ActivityIndicator size="large" color={Colors.primary} />
               ) : (
                 <Button
-                  title="Sign Up"
+                  style={{
+                    height: 50,
+                    justifyContent: "center",
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}
+                  mode="contained"
                   color={Colors.primary}
                   onPress={signupHandler}
-                />
+                >Register
+                </Button>
               )}
             </View>
           </ScrollView>
-        </Card>
-      </LinearGradient>
+        {/* </Card> */}
+      {/* </LinearGradient> */}
     </KeyboardAvoidingView>
   );
 };
@@ -180,7 +210,7 @@ SignupScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
+    flex: 2,
   },
   gradient: {
     flex: 1,
@@ -188,13 +218,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   authContainer: {
-    width: "80%",
-    maxWidth: 400,
-    maxHeight: 600,
-    padding: 20,
+    width: "100%",
+    // maxWidth: 400,
+    // maxHeight: 2600,
+    paddingLeft: 35,
+    paddingRight: 35,
+    marginBottom: 20,
   },
   buttonContainer: {
     marginTop: 10,
+  },
+  logo: {
+    width: "100%",
+    height: 220,
+    marginBottom: 15,
+    padding: 20,
+    // marginTop: 80,
   },
 });
 
