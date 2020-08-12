@@ -76,9 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginVertical: 4,
   },
-  action: {
-    marginTop: 10,
-  },
+  action: { flex: 1, flexDirection: "row", marginTop: 10 },
   cardContainer: {
     width: "95%",
     padding: 20,

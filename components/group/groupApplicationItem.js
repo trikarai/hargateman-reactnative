@@ -1,52 +1,36 @@
 import React from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { Button, Card, Title, Paragraph, Chip } from "react-native-paper";
 
 import Colors from "../../constants/colors";
 
-const CommunityMemberItem = (props) => {
+const groupMembershipItem = (props) => {
   return (
     <Card>
       <Card.Content>
         <Title>{props.name}</Title>
-        <Paragraph>Join Time: {props.joinTime}</Paragraph>
-        {props.admin ? (
-          <Paragraph>Admin</Paragraph>
-        ) : (
-          <Paragraph>not Admin</Paragraph>
-        )}
-        {props.active ? (
-          <Paragraph>Active Member</Paragraph>
-        ) : (
-          <Paragraph>Not Active Member</Paragraph>
-        )}
+        <Text> {JSON.stringify(props)} </Text>
       </Card.Content>
       <Card.Actions>
-        {props.active ? (
+        {!props.concluded ? (
           <Button
             color={Colors.error}
-            style={{ marginEnd: 10 }}
             mode="contained"
-            onPress={props.onRemove}
+            onPress={props.onCancel}
           >
-            Remove
+            Cancel
           </Button>
         ) : (
-          <View></View>
-        )}
-        {!props.admin ? (
-          <Button mode="outlined" onPress={props.onSetAdmin}>
-            Set As Admin
-          </Button>
-        ) : (
-          <View></View>
+          <View>
+            <Chip>already concluded</Chip>
+          </View>
         )}
       </Card.Actions>
     </Card>
   );
 };
 
-export default CommunityMemberItem;
+export default groupMembershipItem;
 
 const styles = StyleSheet.create({
   screen: {

@@ -28,9 +28,14 @@ import CommunityMembershipDetailScreen from "../screens/community/membership/Det
 import CommunityMembershipAdminDetailScreen from "../screens/community/admin/DetailScreen";
 import CommunityDetailScreen from "../screens/community/CommunityDetailScreen";
 import CreateCommunityScreen from "../screens/community/CreateCommunityScreen";
+import CommunityGroupMembershipScreen from "../screens/community/group/member/GroupMembershipScreen";
+import CommunityGroupApplicationScreen from "../screens/community/group/member/GroupApplicationScreen";
+import CommunityAvailableGroupScreen from "../screens/community/group/AvailableGroupScreen";
+
 // community as admin
 import CommunityApplicantsScreen from "../screens/community/admin/ApplicantsScreen";
 import CommunityMembersScreen from "../screens/community/membership/MembersScreen";
+import CommunityGroupAdminScreen from "../screens/community/group/admin/GroupScreen";
 
 // other
 import Colors from "./../constants/colors";
@@ -79,9 +84,14 @@ const CommunityNavigator = createStackNavigator(
     CommunityDetail: CommunityDetailScreen,
     CreateCommunity: CreateCommunityScreen,
     CommunityApplications: CommunityApplicationsScreen,
+    CommunityGroupMembership: CommunityGroupMembershipScreen,
+    CommunityGroupApplication: CommunityGroupApplicationScreen,
+    CommunityAvailableGroup: CommunityAvailableGroupScreen,
+
     // admin
     CommunityApplicants: CommunityApplicantsScreen,
     CommunityMembers: CommunityMembersScreen,
+    CommunityGroup: CommunityGroupAdminScreen,
   },
   {
     navigationOptions: {

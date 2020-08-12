@@ -68,17 +68,17 @@ const MembersScreen = (props) => {
     }
   };
   const onRemoveHandler = async (id) => {
-    // setError(null);
-    // setIsRefreshing(true);
-    // try {
-    //   await dispatch(
-    //     communitiesAction.setAdminCommunityMember(communityId, id)
-    //   );
-    //   loadMembers();
-    // } catch (err) {
-    //   setError(err.message);
-    //   setIsRefreshing(false);
-    // }
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(
+        communitiesAction.removeCommunityMember(communityId, id)
+      );
+      loadMembers();
+    } catch (err) {
+      setError(err.message);
+      setIsRefreshing(false);
+    }
   };
 
   if (isError) {

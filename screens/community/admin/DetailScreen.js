@@ -74,6 +74,19 @@ const CommunityDetailScreen = (props) => {
             >
               Applicants
             </Button>
+
+            <Button
+              style={styles.button}
+              color={Colors.primary}
+              mode="contained"
+              onPress={() => {
+                props.navigation.navigate("CommunityGroup", {
+                  communityId: communityId,
+                });
+              }}
+            >
+              Groups
+            </Button>
           </View>
         </Card.Actions>
       </Card>
@@ -95,6 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    margin: 5,
+    margin: 3,
   },
 });

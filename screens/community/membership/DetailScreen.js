@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ScrollView, StyleSheet, Alert } from "react-native";
+import { ScrollView, StyleSheet, Alert, View } from "react-native";
 import {
   Button,
   Card,
@@ -16,6 +16,7 @@ const CommunityDetailScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const communityId = props.navigation.getParam("communityId");
+  const communityName = props.navigation.getParam("communityName");
   const community_detail = useSelector(
     (state) => state.communities.detailCommunity
   );
@@ -26,7 +27,6 @@ const CommunityDetailScreen = (props) => {
     if (error) {
       Alert.alert("An Error Occured", error, [{ text: "OK" }]);
     }
-    // dispatch(communitiesAction.detailCommunities(communityId));
   }, [dispatch, error]);
 
   const applyHandler = () => {
@@ -52,13 +52,28 @@ const CommunityDetailScreen = (props) => {
           {isLoading ? (
             <ActivityIndicator size="large" color={Colors.primary} />
           ) : (
-            <Button
-              color={Colors.primary}
-              mode="contained"
-              onPress={applyHandler}
-            >
-              Leave
-            </Button>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <Button
+                style={{ marginEnd: 10 }}
+                color={Colors.error}
+                mode="contained"
+                onPress={applyHandler}
+              >
+                Leave
+              </Button>
+              <Button
+                mode="contained"
+                color={Colors.primary}
+                onPress={() => {
+                  props.navigation.navigate("CommunityGroupMembership", {
+                    communityId: communityId,
+                    communityName: communityName,
+                  });
+                }}
+              >
+                Group
+              </Button>
+            </View>
           )}
         </Card.Actions>
       </Card>
@@ -70,7 +85,7 @@ export default CommunityDetailScreen;
 
 CommunityDetailScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: navData.navigation.getParam("communityName"),
+    headerTitle: "Community Detail",
   };
 };
 

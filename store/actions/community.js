@@ -282,6 +282,31 @@ export const setAdminCommunityMember = (communityId, id) => {
     }
   };
 };
+export const removeCommunityMember = (communityId, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.delete(
+        baseUri.api +
+          "/user/as-community-admin/" +
+          communityId +
+          "/community-memberships/" +
+          id,
+        {},
+        { headers: { Authorization: "Bearer " + token } }
+      );
+    } catch (err) {
+      const errorResData = await err.response.data;
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
 
 export const leaveCommunities = (id) => {
   return async (dispatch, getState) => {
