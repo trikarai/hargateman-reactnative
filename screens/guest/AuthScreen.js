@@ -116,12 +116,12 @@ const AuthScreen = (props) => {
             }}
           >
             <Image
-              source={require("../../assets/logo-b.png")}
+              source={require("../../assets/logo-c.png")}
               style={styles.logo}
             />
           </View>
 
-          <View style={styles.authContainer}>
+          <ScrollView style={styles.authContainer}>
             <Input
               id="email"
               label="E-Mail"
@@ -187,7 +187,7 @@ const AuthScreen = (props) => {
             ) : (
               <View></View>
             )}
-          </View>
+          </ScrollView>
         </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -239,10 +239,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   logo: {
-    width: 192,
-    height: 90,
-    marginBottom: 45,
-    marginTop: 80,
+    width: '100%',
+    height: 230,
+    marginBottom: 15,
+    // marginTop: 80,
   },
   background: {
     flex: 1,
