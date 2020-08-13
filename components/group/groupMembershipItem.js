@@ -26,7 +26,11 @@ const groupMembershipItem = (props) => {
           >
             Members
           </Button>
-          <Button color={Colors.primary} mode="contained">
+          <Button
+            color={Colors.primary}
+            mode="contained"
+            onPress={props.gotoApplicants}
+          >
             Applications
           </Button>
         </Card.Actions>

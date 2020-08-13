@@ -83,18 +83,15 @@ const GroupScreen = (props) => {
             style={{ margin: 5 }}
             mode="contained"
             color={Colors.primary}
-            onPress={() => {}}
+            onPress={() => {
+              props.navigation.navigate("AdminCreateGroup", {
+                communityId: communityId,
+              });
+            }}
           >
             Create Group
           </Button>
-          <Button
-            style={{ margin: 5 }}
-            mode="contained"
-            color={Colors.primary}
-            onPress={() => {}}
-          >
-            Group Applicants
-          </Button>
+          
         </View>
         <FlatList
           onRefresh={loadGroups}

@@ -8,6 +8,7 @@ import Colors from "../../../../constants/colors";
 import * as groupAction from "../../../../store/actions/group";
 
 import GroupMembershipItem from "../../../../components/group/groupMembershipItem";
+import group from "../../../../store/reducers/group";
 
 const GroupScreen = (props) => {
   const communityId = props.navigation.getParam("communityId");
@@ -55,6 +56,14 @@ const GroupScreen = (props) => {
     };
   }, [loadGroups]);
 
+  const gotoApplicantsHandler = (groupId, groupName) => {
+    props.navigation.navigate("AdminGroupApplicants", {
+      communityId: communityId,
+      groupId: groupId,
+      groupName: groupName,
+    });
+  };
+
   if (isError) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -95,27 +104,24 @@ const GroupScreen = (props) => {
           </Button>
           {/* <Text>{asu}</Text> */}
         </View>
-        {groups.length !== 0 ? (
-          <FlatList
-            onRefresh={loadGroups}
-            refreshing={isRefreshing}
-            data={groups}
-            keyExtractor={(item) => item.id}
-            renderItem={(itemData) => (
-              <GroupMembershipItem
-                id={itemData.item.id}
-                name={itemData.item.name}
-                admin={itemData.item.admin}
-                admin={itemData.item.active}
-                joinTime={itemData.item.joinTime}
-              />
-            )}
-          />
-        ) : (
-          <View>
-            <Text>No Group joined, please join by clicking button above</Text>
-          </View>
-        )}
+        <FlatList
+          onRefresh={loadGroups}
+          refreshing={isRefreshing}
+          data={groups}
+          keyExtractor={(item) => item.id}
+          renderItem={(itemData) => (
+            <GroupMembershipItem
+              id={itemData.item.id}
+              name={itemData.item.name}
+              admin={itemData.item.admin}
+              admin={itemData.item.active}
+              joinTime={itemData.item.joinTime}
+              gotoApplicants={() => {
+                gotoApplicantsHandler(itemData.item.id, itemData.item.name);
+              }}
+            />
+          )}
+        />
       </View>
     );
   }

@@ -11,8 +11,15 @@ const asAdminGroupItem = (props) => {
         <Title>{props.name}</Title>
       </Card.Content>
       <Card.Actions>
+        <Button
+          style={{ marginEnd: 10 }}
+          color={Colors.primary}
+          mode="contained"
+        >
+          Members
+        </Button>
         <Button color={Colors.primary} mode="contained">
-          dummy
+          Applicants
         </Button>
       </Card.Actions>
     </Card>

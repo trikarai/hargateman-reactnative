@@ -2,10 +2,12 @@ import {
   CREATE_GROUP,
   SET_AVAIL_GROUP,
   SET_MEMBERSHIP_GROUP,
+  SET_ADMIN_APPLICANT_GROUP
 } from "../actions/group";
 
 const initialState = {
   groups: [],
+  applicants: [],
 };
 
 export default (state = initialState, action) => {
@@ -17,6 +19,10 @@ export default (state = initialState, action) => {
     case SET_MEMBERSHIP_GROUP:
       return {
         groups: action.groups,
+      };
+    case SET_ADMIN_APPLICANT_GROUP:
+      return {
+        applicants: action.groups,
       };
     default:
       return state;
