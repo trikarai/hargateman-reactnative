@@ -136,7 +136,6 @@ const AuthScreen = (props) => {
               returnKeyType="next"
             />
             <Input
-              ref={(input) => {}}
               style={styles.topInput}
               id="password"
               label="Password"
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   logo: {
-    width: '100%',
+    width: "100%",
     height: 230,
     marginBottom: 15,
     // marginTop: 80,
