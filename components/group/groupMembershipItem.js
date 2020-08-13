@@ -9,12 +9,30 @@ const groupMembershipItem = (props) => {
     <Card>
       <Card.Content>
         <Title>{props.name}</Title>
+        <Paragraph>{JSON.stringify(props)}</Paragraph>
       </Card.Content>
       <Card.Actions>
         <Button color={Colors.primary} mode="contained">
           Thread
         </Button>
       </Card.Actions>
+      {/* admin group action */}
+      {props.admin ? (
+        <Card.Actions>
+          <Button
+            style={{ marginEnd: 10 }}
+            color={Colors.primary}
+            mode="contained"
+          >
+            Members
+          </Button>
+          <Button color={Colors.primary} mode="contained">
+            Applications
+          </Button>
+        </Card.Actions>
+      ) : (
+        <View></View>
+      )}
     </Card>
   );
 };

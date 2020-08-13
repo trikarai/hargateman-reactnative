@@ -105,6 +105,9 @@ const GroupScreen = (props) => {
               <GroupMembershipItem
                 id={itemData.item.id}
                 name={itemData.item.name}
+                admin={itemData.item.admin}
+                admin={itemData.item.active}
+                joinTime={itemData.item.joinTime}
               />
             )}
           />

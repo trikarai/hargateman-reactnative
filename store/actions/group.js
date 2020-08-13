@@ -7,6 +7,7 @@ export const SET_MEMBERSHIP_GROUP = "SET_MEMBERSHIP_GROUP";
 
 import BaseModel from "../../model/baseModel";
 import GroupApplication from "../../model/community/group/GroupApplication";
+import GroupMembership from "../../model/community/group/GroupMembership";
 
 export const createGroup = (communityId, name, decription, admin) => {
   return async (dispatch, getState) => {
@@ -165,7 +166,13 @@ export const fetchGroupMembership = (communityId) => {
         const array = resData.data.list;
         array.forEach((element) => {
           loadedGroups.push(
-            new BaseModel(element.group.id, element.group.name)
+            new GroupMembership(
+              element.group.id,
+              element.group.name,
+              element.anAdmin,
+              element.active,
+              element.joinTime
+            )
           );
         });
       }

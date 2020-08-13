@@ -22,7 +22,9 @@ const groupMembershipItem = (props) => {
           </Button>
         ) : (
           <View>
-            <Chip>already concluded</Chip>
+            <Chip>
+              {props.notes}
+            </Chip>
           </View>
         )}
       </Card.Actions>
