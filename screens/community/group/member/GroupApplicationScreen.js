@@ -9,7 +9,7 @@ import * as groupAction from "../../../../store/actions/group";
 
 import GroupApplicationItem from "../../../../components/group/groupApplicationItem";
 
-const GroupScreen = (props) => {
+const GroupApplicationScreen = (props) => {
   const communityId = props.navigation.getParam("communityId");
 
   const [isLoading, setLoading] = useState(false);
@@ -116,9 +116,9 @@ const GroupScreen = (props) => {
   }
 };
 
-export default GroupScreen;
+export default GroupApplicationScreen;
 
-GroupScreen.navigationOptions = (navData) => {
+GroupApplicationScreen.navigationOptions = (navData) => {
   return {
     headerTitle:
       navData.navigation.getParam("communityName") + " Group Application",

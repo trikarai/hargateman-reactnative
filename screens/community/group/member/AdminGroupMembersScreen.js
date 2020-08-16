@@ -1,7 +1,6 @@
-import React from "react";
-import React, { useState, useEffect, useCallback } from "react";
+ import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, Card } from "react-native-paper";
 
 import Colors from "../../../../constants/colors";
@@ -23,7 +22,7 @@ const AdminGroupMembersScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const members = useState((state) => state.groups.members);
+  const members = useSelector((state) => state.groups.members);
   const asu = JSON.stringify(members);
 
   const loadMembers = useCallback(async () => {

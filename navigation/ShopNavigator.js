@@ -38,6 +38,7 @@ import CommunityMembersScreen from "../screens/community/membership/MembersScree
 import CommunityGroupAdminScreen from "../screens/community/group/admin/GroupScreen";
 // group admin
 import AdminGroupApplicantsScreen from "../screens/community/group/member/AdminGroupApplicantsScreen";
+// import AdminGroupMembersScreen from "../screens/community/group/member/AdminGroupMembersScreen";
 import AdminCreateGroupScreen from "../screens/community/group/admin/GroupCreateScreen";
 
 // other
@@ -97,7 +98,8 @@ const CommunityNavigator = createStackNavigator(
     CommunityGroup: CommunityGroupAdminScreen,
     // admin group
     AdminCreateGroup: AdminCreateGroupScreen,
-    AdminGroupApplicants : AdminGroupApplicantsScreen
+    AdminGroupApplicants: AdminGroupApplicantsScreen,
+    // AdminGroupMembers: AdminGroupMembersScreen,
   },
   {
     navigationOptions: {

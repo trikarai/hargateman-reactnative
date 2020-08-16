@@ -49,7 +49,7 @@ const CreateCommunityScreen = (props) => {
   const dispatch = useDispatch();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: "",
+      name: "",
     },
     inputValidities: {
       name: false,

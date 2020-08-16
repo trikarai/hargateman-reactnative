@@ -9,7 +9,7 @@ import * as groupAction from "../../../store/actions/group";
 
 import GroupItem from "../../../components/group/availableGroup";
 
-const GroupScreen = (props) => {
+const AvailableGroupScreen = (props) => {
   const communityId = props.navigation.getParam("communityId");
   const communityName = props.navigation.getParam("communityName");
 
@@ -128,9 +128,9 @@ const GroupScreen = (props) => {
   }
 };
 
-export default GroupScreen;
+export default AvailableGroupScreen;
 
-GroupScreen.navigationOptions = (navData) => {
+AvailableGroupScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Available Community Groups",
   };

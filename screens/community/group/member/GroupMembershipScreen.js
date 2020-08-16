@@ -8,9 +8,8 @@ import Colors from "../../../../constants/colors";
 import * as groupAction from "../../../../store/actions/group";
 
 import GroupMembershipItem from "../../../../components/group/groupMembershipItem";
-import group from "../../../../store/reducers/group";
 
-const GroupScreen = (props) => {
+const GroupMembershipScreen = (props) => {
   const communityId = props.navigation.getParam("communityId");
   const communityName = props.navigation.getParam("communityName");
 
@@ -127,9 +126,9 @@ const GroupScreen = (props) => {
   }
 };
 
-export default GroupScreen;
+export default GroupMembershipScreen;
 
-GroupScreen.navigationOptions = (navData) => {
+GroupMembershipScreen.navigationOptions = (navData) => {
   return {
     headerTitle: navData.navigation.getParam("communityName") + " Group",
   };

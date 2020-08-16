@@ -12,9 +12,13 @@ import GroupApplication from "../../model/community/group/GroupApplication";
 import GroupMembership from "../../model/community/group/GroupMembership";
 import GroupApplicant from "../../model/community/group/GroupApplicant";
 
-export const createGroup = (communityId, name, decription, admin) => {
+export const createGroup = (communityId, name, decription) => {
   return async (dispatch, getState) => {
+    const admin = [];
     const token = getState().auth.credentials.token;
+    const selfId = getState().auth.data.id;
+    admin.push(selfId);
+
     try {
       const response = await axios.post(
         baseUri.api + "/user/as-community-admin/" + communityId + "/groups",
