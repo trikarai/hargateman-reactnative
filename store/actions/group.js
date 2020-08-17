@@ -4,6 +4,7 @@ import baseUri from "../../config/baseUri";
 export const CREATE_GROUP = "CREATE_GROUP";
 export const SET_AVAIL_GROUP = "SET_AVAIL_GROUP";
 export const SET_MEMBERSHIP_GROUP = "SET_MEMBERSHIP_GROUP";
+export const SET_MEMBERS_GROUP = "SET_MEMBERS_GROUP";
 
 export const SET_ADMIN_APPLICANT_GROUP = "SET_ADMIN_APPLICANT_GROUP";
 
@@ -11,6 +12,7 @@ import BaseModel from "../../model/baseModel";
 import GroupApplication from "../../model/community/group/GroupApplication";
 import GroupMembership from "../../model/community/group/GroupMembership";
 import GroupApplicant from "../../model/community/group/GroupApplicant";
+import GroupMember from "../../model/community/group/GroupMember";
 
 export const createGroup = (communityId, name, decription) => {
   return async (dispatch, getState) => {
@@ -383,7 +385,7 @@ export const fetchasAdminGroupMembers = (communityId, groupId) => {
         baseUri.api +
           "/user/as-community-member/" +
           communityId +
-          "/as-group-admin/" +
+          "/as-group-member/" +
           groupId +
           "/members",
         {
@@ -399,21 +401,91 @@ export const fetchasAdminGroupMembers = (communityId, groupId) => {
         const array = resData.data.list;
         array.forEach((element) => {
           loadedGroups.push(
-            new GroupApplication(
+            new GroupMember(
               element.id,
-              element.group.id,
-              element.group.name,
-              element.notes,
-              element.concluded,
-              element.appliedTime
+              element.anAdmin,
+              element.joinTime,
+              element.active,
+              element.user.id,
+              element.user.name
             )
           );
         });
       }
       dispatch({
-        type: SET_MEMBERSHIP_GROUP,
+        type: SET_MEMBERS_GROUP,
         groups: loadedGroups,
       });
+    } catch (err) {
+      console.log(err);
+      const errorResData = await err.response.data;
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
+export const asAdminRemoveGroupMembers = (communityId, groupId, memberId) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-member/" +
+          communityId +
+          "/as-group-admin/" +
+          groupId +
+          "/members/" +
+          memberId +
+          "/remove",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = await response.data;
+      console.log(resData);
+    } catch (err) {
+      console.log(err);
+      const errorResData = await err.response.data;
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
+export const asAdminSetAdminGroupMembers = (communityId, groupId, memberId) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.patch(
+        baseUri.api +
+          "/user/as-community-member/" +
+          communityId +
+          "/as-group-admin/" +
+          groupId +
+          "/members/" +
+          memberId +
+          "/set-as-admin",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = await response.data;
+      console.log(resData);
     } catch (err) {
       console.log(err);
       const errorResData = await err.response.data;

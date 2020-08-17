@@ -1,6 +1,6 @@
- import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text, Alert, StyleSheet } from "react-native";
+import { View, FlatList, Text, Alert, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, Card } from "react-native-paper";
 
 import Colors from "../../../../constants/colors";
@@ -22,17 +22,20 @@ const AdminGroupMembersScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const members = useSelector((state) => state.groups.members);
+  const members = useSelector((state) => state.group.members);
   const asu = JSON.stringify(members);
 
   const loadMembers = useCallback(async () => {
     setisRefreshing(true);
     setisError(false);
     try {
-      await dispatch(groupActions.fetchasAdminGroupMembers(communityId, groupId));
+      await dispatch(
+        groupActions.fetchasAdminGroupMembers(communityId, groupId)
+      );
     } catch (error) {
       seterrorMsg(error.message);
     }
+    setisRefreshing(false);
   }, [dispatch, setisRefreshing, setisError, seterrorMsg]);
 
   useEffect(() => {
@@ -54,6 +57,33 @@ const AdminGroupMembersScreen = (props) => {
       willFocusSub.remove();
     };
   }, [loadMembers]);
+
+  const onRemoveHandler = async (memberId) => {
+    setisLoading(true);
+    try {
+      await dispatch(
+        groupActions.asAdminRemoveGroupMembers(communityId, groupId, memberId)
+      ).finally(() => {
+        loadMembers();
+      });
+    } catch (error) {
+      seterrorMsg(error.message);
+    }
+    setisLoading(false);
+  };
+  const onSetAdminHandler = async (memberId) => {
+    setisLoading(true);
+    try {
+      await dispatch(
+        groupActions.asAdminSetAdminGroupMembers(communityId, groupId, memberId)
+      ).finally(() => {
+        loadMembers();
+      });
+    } catch (error) {
+      seterrorMsg(error.message);
+    }
+    setisLoading(false);
+  };
 
   if (isError) {
     return (
@@ -79,7 +109,26 @@ const AdminGroupMembersScreen = (props) => {
   } else {
     return (
       <View>
-        <Text>{asu}</Text>
+        <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadMembers}
+          data={members}
+          keyExtractor={(item) => item.id}
+          renderItem={(itemData) => (
+            <GroupMemberItem
+              userName={itemData.item.userName}
+              admin={itemData.item.admin}
+              active={itemData.item.active}
+              joinTime={itemData.item.joinTime}
+              onRemove={() => {
+                onRemoveHandler(itemData.item.id);
+              }}
+              onSetAdmin={() => {
+                onSetAdminHandler(itemData.item.id);
+              }}
+            />
+          )}
+        />
       </View>
     );
   }
@@ -89,7 +138,7 @@ export default AdminGroupMembersScreen;
 
 AdminGroupMembersScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: navData.navigation.getParam("groupName") + "Members",
+    headerTitle: navData.navigation.getParam("groupName") + " Members",
   };
 };
 

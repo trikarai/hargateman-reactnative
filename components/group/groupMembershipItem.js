@@ -23,6 +23,7 @@ const groupMembershipItem = (props) => {
             style={{ marginEnd: 10 }}
             color={Colors.primary}
             mode="contained"
+            onPress={props.gotoMembers}
           >
             Members
           </Button>

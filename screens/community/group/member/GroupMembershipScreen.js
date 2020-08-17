@@ -62,6 +62,13 @@ const GroupMembershipScreen = (props) => {
       groupName: groupName,
     });
   };
+  const gotoMembersHandler = (groupId, groupName) => {
+    props.navigation.navigate("AdminGroupMembers", {
+      communityId: communityId,
+      groupId: groupId,
+      groupName: groupName,
+    });
+  };
 
   if (isError) {
     return (
@@ -117,6 +124,9 @@ const GroupMembershipScreen = (props) => {
               joinTime={itemData.item.joinTime}
               gotoApplicants={() => {
                 gotoApplicantsHandler(itemData.item.id, itemData.item.name);
+              }}
+              gotoMembers={() => {
+                gotoMembersHandler(itemData.item.id, itemData.item.name);
               }}
             />
           )}
