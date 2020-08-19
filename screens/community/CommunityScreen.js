@@ -8,8 +8,6 @@ import * as communitiesAction from "../../store/actions/community";
 
 import CommunityItem from "../../components/community/communityItem";
 
-import { Button as ButtonPaper } from "react-native-paper";
-
 const CommunityScreen = (props) => {
   const [isLoading, setIsloading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -78,14 +76,15 @@ const CommunityScreen = (props) => {
     return (
       <View>
         <View style={styles.create}>
-          <ButtonPaper
+          <Button
             mode="contained"
             onPress={() => {
               props.navigation.navigate("CommunityApplications");
             }}
           >
             Communities Applications
-          </ButtonPaper>
+          </Button>
+          >
         </View>
         <FlatList
           onRefresh={loadCommunities}

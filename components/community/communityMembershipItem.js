@@ -32,26 +32,38 @@ const CommunityItem = (props) => {
         </View>
         <View style={styles.action}>
           {props.active ? (
-            <Button
-              style={styles.button}
-              color={Colors.primary}
-              mode="contained"
-              onPress={props.onLeave}
-            >
-              View Detail
-            </Button>
+            <View>
+              <Button
+                style={styles.button}
+                color={Colors.primary}
+                mode="contained"
+                onPress={props.onLeave}
+              >
+                Detail
+              </Button>
+              <Button
+                style={styles.button}
+                color={Colors.primary}
+                mode="contained"
+                onPress={props.onThread}
+              >
+                Thread
+              </Button>
+            </View>
           ) : (
             <View></View>
           )}
           {props.admin && props.active ? (
-            <Button
-              style={styles.button}
-              color={Colors.primary}
-              mode="contained"
-              onPress={props.onManage}
-            >
-              Manage
-            </Button>
+            <View>
+              <Button
+                style={styles.button}
+                color={Colors.primary}
+                mode="contained"
+                onPress={props.onManage}
+              >
+                Manage
+              </Button>
+            </View>
           ) : (
             <View></View>
           )}

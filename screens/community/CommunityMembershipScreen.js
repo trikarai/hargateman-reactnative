@@ -62,6 +62,12 @@ const CommunityApplicationScreen = (props) => {
       communityName: name,
     });
   };
+  const onThreadHandler = (id, name) => {
+    props.navigation.navigate("CommunityThreads", {
+      communityId: id,
+      communityName: name,
+    });
+  };
 
   if (isError) {
     return (
@@ -125,6 +131,12 @@ const CommunityApplicationScreen = (props) => {
               }}
               onManage={() => {
                 selectItemManageHandler(
+                  itemData.item.communityId,
+                  itemData.item.communityName
+                );
+              }}
+              onThread={() => {
+                onThreadHandler(
                   itemData.item.communityId,
                   itemData.item.communityName
                 );

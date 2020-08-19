@@ -32,6 +32,10 @@ import CommunityGroupMembershipScreen from "../screens/community/group/member/Gr
 import CommunityGroupApplicationScreen from "../screens/community/group/member/GroupApplicationScreen";
 import CommunityAvailableGroupScreen from "../screens/community/group/AvailableGroupScreen";
 
+// community thread
+import CommunityThreadsScreen from "../screens/community/thread/CommunityThreadsScreen";
+import CommunityThreadCommentsScreen from "../screens/community/thread/CommunityThreadCommentsScreen";
+
 // community as admin
 import CommunityApplicantsScreen from "../screens/community/admin/ApplicantsScreen";
 import CommunityMembersScreen from "../screens/community/membership/MembersScreen";
@@ -100,6 +104,9 @@ const CommunityNavigator = createStackNavigator(
     AdminCreateGroup: AdminCreateGroupScreen,
     AdminGroupApplicants: AdminGroupApplicantsScreen,
     AdminGroupMembers: AdminGroupMembersScreen,
+    // Thread
+    CommunityThreads: CommunityThreadsScreen,
+    CommunityThreadComments: CommunityThreadCommentsScreen,
   },
   {
     navigationOptions: {
