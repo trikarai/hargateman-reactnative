@@ -28,6 +28,7 @@ const CommuntyThreadsScreen = (props) => {
   const [isRefresing, setisRefresing] = useState(false);
   const [isError, setisError] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState();
+  const [isFocus, setisFocus] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -53,6 +54,12 @@ const CommuntyThreadsScreen = (props) => {
   }, [loadThreads]);
 
   useEffect(() => {
+    const focusListener = props.navigation.addListener("didFocus", () => {
+      setisFocus(true);
+    });
+  }, [setisFocus]);
+
+  useEffect(() => {
     setisLoading(true);
     loadThreads().then(() => {});
     setisLoading(false);
@@ -64,8 +71,14 @@ const CommuntyThreadsScreen = (props) => {
     }
   }, [ErrorMsg]);
 
-  const onViewHandler = (threadId) => {
-    props.navigation.navigate("CommunityThreadComments", { threadId: threadId });
+  const onViewHandler = (threadId, title, content) => {
+    setisFocus(false);
+    props.navigation.navigate("CommunityThreadComments", {
+      communityId: communityId,
+      threadId: threadId,
+      threadTitle: title,
+      threadContent: content,
+    });
   };
 
   if (isError) {
@@ -91,7 +104,7 @@ const CommuntyThreadsScreen = (props) => {
     );
   } else {
     return (
-      <ScrollView>
+      <View>
         <FlatList
           onRefresh={loadThreads}
           refreshing={isRefresing}
@@ -101,25 +114,34 @@ const CommuntyThreadsScreen = (props) => {
             <ThreadItem
               threadId={itemData.item.id}
               title={itemData.item.title}
+              content={itemData.item.content}
               closed={itemData.item.closed}
               submitTime={itemData.item.submitTime}
               userName={itemData.item.userName}
               onView={() => {
-                onViewHandler(itemData.item.id);
+                onViewHandler(
+                  itemData.item.id,
+                  itemData.item.title,
+                  itemData.item.content
+                );
               }}
             />
           )}
         />
-        <Portal>
-          <FAB
-            style={styles.fab}
-            icon="plus"
-            onPress={() => {
-              console.log("fab pressed");
-            }}
-          />
-        </Portal>
-      </ScrollView>
+        {isFocus ? (
+          <Portal>
+            <FAB
+              style={styles.fab}
+              icon="plus"
+              onPress={() => {
+                console.log("fab pressed");
+              }}
+            />
+          </Portal>
+        ) : (
+          <View></View>
+        )}
+      </View>
     );
   }
 };
