@@ -44,7 +44,7 @@ const CommuntyThreadsScreen = (props) => {
       setisError(true);
     }
     setisRefresing(false);
-  }, [dispatch, setisLoading, setisRefresing, setErrorMsg]);
+  }, [dispatch, setisRefresing, setErrorMsg]);
 
   useEffect(() => {
     const willFocusSub = props.navigation.addListener("willFocus", loadThreads);

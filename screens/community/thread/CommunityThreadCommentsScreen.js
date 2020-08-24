@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
   ActivityIndicator,
@@ -9,22 +9,57 @@ import {
   Portal,
   FAB,
   TextInput,
+  Caption,
 } from "react-native-paper";
 
 import Colors from "../../../constants/colors";
 import * as threadActions from "../../../store/actions/thread";
+
+import ThreadCommentItem from "../../../components/thread/ThreadCommentItem";
 
 const CommunityThreadCommentsScreen = (props) => {
   const communityId = props.navigation.getParam("communityId");
   const threadId = props.navigation.getParam("threadId");
   const threadTitle = props.navigation.getParam("threadTitle");
   const [content, setContent] = useState("");
+  const [isRefresing, setisRefresing] = useState(false);
+  const [isCommentLoading, setisCommentLoading] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState();
   const [isError, setisError] = useState(false);
   const [isComment, setisComment] = useState(false);
   const [isSubmit, setisSubmit] = useState(false);
 
+  const comments = useSelector((state) => state.thread.comments);
+
   const dispatch = useDispatch();
+
+  const loadComments = useCallback(async () => {
+    setErrorMsg(null);
+    setisRefresing(true);
+    try {
+      await dispatch(threadActions.fetchComments(communityId, threadId));
+    } catch (error) {
+      setErrorMsg(error.message);
+      setisError(true);
+    }
+    setisRefresing(false);
+  }, [dispatch, setErrorMsg, setisError, setisRefresing]);
+
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener(
+      "willFocus",
+      loadComments
+    );
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadComments]);
+
+  useEffect(() => {
+    setisCommentLoading(true);
+    loadComments().then(() => {});
+    setisCommentLoading(false);
+  }, [dispatch, loadComments, setisCommentLoading]);
 
   useEffect(() => {
     if (ErrorMsg) {
@@ -47,18 +82,22 @@ const CommunityThreadCommentsScreen = (props) => {
   return (
     <View>
       <View>
+        {/* thread detail */}
         <Card>
           <Card.Title title={threadTitle} />
           <Card.Content>
             <Paragraph>content</Paragraph>
           </Card.Content>
         </Card>
+        {/* thread comment input */}
         {isComment ? (
           <View>
             <TextInput
               disabled={isSubmit}
               style={styles.commentBox}
               label="Comment"
+              placeholder="type comment here..."
+              autoFocus={true}
               value={content}
               multiline={true}
               numberOfLines={4}
@@ -100,8 +139,24 @@ const CommunityThreadCommentsScreen = (props) => {
             )}
           </View>
         ) : (
-          <View></View>
+          <View>{/* <Text>test</Text> */}</View>
         )}
+      </View>
+      <View style={{ marginTop: 10 }}>
+        <Caption style={{ marginStart: 5 }}>Thread Comments</Caption>
+        <FlatList
+          onRefresh={loadComments}
+          refreshing={isRefresing}
+          data={comments}
+          keyExtractor={(item) => item.id}
+          renderItem={(itemData) => (
+            <ThreadCommentItem
+              userName={itemData.item.userName}
+              content={itemData.item.content}
+              submitTime={itemData.item.submitTime}
+            />
+          )}
+        />
       </View>
       <Portal>
         <FAB
