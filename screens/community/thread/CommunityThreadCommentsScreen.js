@@ -106,6 +106,7 @@ const CommunityThreadCommentsScreen = (props) => {
             {isSubmit ? (
               <View>
                 <ActivityIndicator
+                  size="large"
                   style={{ margin: 10 }}
                   size="large"
                   color={Colors.primary}

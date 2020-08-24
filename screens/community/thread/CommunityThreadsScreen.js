@@ -134,7 +134,10 @@ const CommuntyThreadsScreen = (props) => {
               style={styles.fab}
               icon="plus"
               onPress={() => {
-                console.log("fab pressed");
+                setisFocus(false);
+                props.navigation.navigate("CreateCommunityThread", {
+                  communityId: communityId,
+                });
               }}
             />
           </Portal>
