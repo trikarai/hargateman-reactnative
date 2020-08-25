@@ -84,7 +84,6 @@ const CommunityScreen = (props) => {
           >
             Communities Applications
           </Button>
-          >
         </View>
         <FlatList
           onRefresh={loadCommunities}
