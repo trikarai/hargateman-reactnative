@@ -53,7 +53,9 @@ const PersonalStoresScreen = (props) => {
     setisLoading(false);
   }, [dispatch, loadStores, setisLoading]);
 
-  const gotoGoodsHandler = (storeId) => {};
+  const gotoGoodsHandler = (storeId) => {
+    // props.navigation.navigate("StoreGoods", { storeId: storeId });
+  };
 
   if (isError) {
     return (
@@ -82,7 +84,9 @@ const PersonalStoresScreen = (props) => {
           style={{ margin: 5 }}
           mode="contained"
           color={Colors.primary}
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate("CreateStore");
+          }}
         >
           Create Store
         </Button>

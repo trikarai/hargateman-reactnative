@@ -1,22 +1,11 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
-import {
-  ScrollView,
-  View,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Button,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch } from "react-redux";
+import { KeyboardAvoidingView, StyleSheet, Alert, View } from "react-native";
+import { Card, Button } from "react-native-paper";
 
-import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
 import Colors from "../../constants/colors";
-
-import { useDispatch } from "react-redux";
-
-import * as communitiesAction from "../../store/actions/community";
+import * as storeAction from "../../store/actions/store";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -43,10 +32,14 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const CreateCommunityScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+const CreateStore = (props) => {
+  const initialState = false;
+  const [isLoading, setisLoading] = useState(initialState);
+  const [isError, setisError] = useState(initialState);
+  const [ErrorMsg, setErrorMsg] = useState();
+
   const dispatch = useDispatch();
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       name: "",
@@ -58,20 +51,20 @@ const CreateCommunityScreen = (props) => {
   });
 
   useEffect(() => {
-    if (error) {
-      Alert.alert("An Error Occured", error, [{ text: "OK" }]);
+    if (ErrorMsg) {
+      Alert.alert("An Error Occured", ErrorMsg, [{ text: "OK" }]);
     }
-  }, [error]);
+  }, [ErrorMsg]);
 
   const createHandler = async () => {
-    setError(null);
-    setIsLoading(true);
+    setErrorMsg(null);
+    setisLoading(true);
     try {
-      await dispatch(communitiesAction.createCommunities(formState.inputValues.name));
-      props.navigation.navigate("CommunityMembership");
+      await dispatch(storeAction.createStore(formState.inputValues.name));
+      props.navigation.goBack();
     } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
+      setErrorMsg(err.message);
+      setisLoading(false);
     }
   };
 
@@ -86,60 +79,53 @@ const CreateCommunityScreen = (props) => {
     },
     [dispatchFormState]
   );
-  
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={5}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
-        <Card style={styles.cardContainer}>
-          <ScrollView>
+      <View>
+        <Card>
+          <Card.Content>
             <Input
               id="name"
-              label="Community Name"
-              errorText="Please Insert Community Name"
+              label="Store Name"
+              errorText="Please Insert Store Name"
               keyboardType="default"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="large" color={Colors.primary} />
-              ) : (
-                <Button
-                  title="Create"
-                  color={Colors.primary}
-                  onPress={createHandler}
-                />
-              )}
+              <Button
+                mode="contained"
+                loading={isLoading}
+                color={Colors.primary}
+                onPress={createHandler}
+              >
+                Create
+              </Button>
             </View>
-          </ScrollView>
+          </Card.Content>
         </Card>
-      </LinearGradient>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default CreateCommunityScreen;
-
+export default CreateStore;
+CreateStore.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Create Personal Stores",
+  };
+};
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-  },
-  cardContainer: { width: "95%", margin: 5 },
-  gradient: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   buttonContainer: {
     marginTop: 10,
   },
 });
-
-CreateCommunityScreen.navigationOptions = {
-  headerTitle: "Create Community",
-};
