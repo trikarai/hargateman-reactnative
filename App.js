@@ -13,6 +13,7 @@ import cartReducer from "./store/reducers/carts";
 import authReducer from "./store/reducers/auth";
 import groupReducer from "./store/reducers/group";
 import threadReducer from "./store/reducers/thread";
+import storeReducer from "./store/reducers/store";
 
 import ShopNavigator from "./navigation/ShopNavigator";
 
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   communities: communitiesReducer,
   group: groupReducer,
   thread: threadReducer,
+  store: storeReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

@@ -12,10 +12,13 @@ import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 
-// screen
+// test screen
 import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
+
+// personal store
+import PersonnalStoresScreen from "../screens/store/PersonalStoresScreen";
 
 import AuthScreen from "../screens/guest/AuthScreen";
 import SignupScreen from "../screens/guest/SignupScreen";
@@ -49,6 +52,7 @@ import AdminCreateGroupScreen from "../screens/community/group/admin/GroupCreate
 import Colors from "./../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import PersonalStoresScreen from "../screens/store/PersonalStoresScreen";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -74,6 +78,24 @@ const ProductNavigator = createStackNavigator(
       drawerIcon: (drawerConfig) => (
         <Ionicons
           name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const PersonnalStoreNavigator = createStackNavigator(
+  {
+    PersonnalStores: PersonalStoresScreen,
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <MaterialCommunityIcons
+          name="store"
           size={23}
           color={drawerConfig.tintColor}
         />
@@ -125,6 +147,7 @@ const CommunityNavigator = createStackNavigator(
 
 const ShopNavigator = createDrawerNavigator(
   {
+    Stores: PersonnalStoreNavigator,
     Communities: CommunityNavigator,
     Products: ProductNavigator,
   },
