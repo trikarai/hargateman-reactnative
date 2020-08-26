@@ -54,14 +54,14 @@ const PersonalStoresScreen = (props) => {
   }, [dispatch, loadStores, setisLoading]);
 
   const gotoGoodsHandler = (storeId) => {
-    // props.navigation.navigate("StoreGoods", { storeId: storeId });
+    props.navigation.navigate("StoreGoods", { storeId: storeId });
   };
 
   if (isError) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>An Error Occured</Text>
-        <Button mode="contained" onPress={loadCommunities}>
+        <Button mode="contained" onPress={loadStores}>
           Try Again
         </Button>
       </View>

@@ -20,6 +20,8 @@ import CartScreen from "../screens/shop/CartScreen";
 // personal store
 import PersonalStoresScreen from "../screens/store/PersonalStoresScreen";
 import CreateStoreScreen from "../screens/store/CreateStoreScreen";
+// store goods
+import StoreGoodsScreem from "../screens/store/good/StoreGoodsScreen";
 
 // guest screen
 import AuthScreen from "../screens/guest/AuthScreen";
@@ -93,6 +95,7 @@ const PersonnalStoreNavigator = createStackNavigator(
   {
     PersonnalStores: PersonalStoresScreen,
     CreateStore: CreateStoreScreen,
+    StoreGoods: StoreGoodsScreem,
   },
   {
     navigationOptions: {
