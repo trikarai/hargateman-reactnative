@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 35,
     paddingRight: 35,
-    // marginTop: 100,
+    marginTop: 30,
   },
   buttonContainer: {
     marginTop: 10,
