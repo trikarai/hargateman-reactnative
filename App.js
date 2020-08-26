@@ -14,6 +14,7 @@ import authReducer from "./store/reducers/auth";
 import groupReducer from "./store/reducers/group";
 import threadReducer from "./store/reducers/thread";
 import storeReducer from "./store/reducers/store";
+import goodReducer from "./store/reducers/good";
 
 import ShopNavigator from "./navigation/ShopNavigator";
 
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   group: groupReducer,
   thread: threadReducer,
   store: storeReducer,
+  good: goodReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
