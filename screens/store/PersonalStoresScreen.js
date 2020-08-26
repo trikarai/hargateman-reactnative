@@ -88,7 +88,7 @@ const PersonalStoresScreen = (props) => {
             props.navigation.navigate("CreateStore");
           }}
         >
-          Create Store
+          Create New Store
         </Button>
         {/* <Text>{JSON.stringify(stores)}</Text> */}
         <FlatList
