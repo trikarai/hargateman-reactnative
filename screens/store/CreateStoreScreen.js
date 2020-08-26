@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { KeyboardAvoidingView, StyleSheet, Alert, View } from "react-native";
+import { ScrollView, Image, KeyboardAvoidingView, StyleSheet, Alert, View } from "react-native";
 import { Card, Button } from "react-native-paper";
 
 import Input from "../../components/UI/Input";
@@ -82,13 +82,17 @@ const CreateStore = (props) => {
 
   return (
     <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={5}
+      behavior="height"
+      keyboardVerticalOffset={3}
       style={styles.screen}
     >
-      <View>
+      <ScrollView>
         <Card>
           <Card.Content>
+          <Image
+              source={require("../../assets/createnewstore.png")}
+              style={styles.logo}
+            />
             <Input
               id="name"
               label="Store Name"
@@ -110,7 +114,7 @@ const CreateStore = (props) => {
             </View>
           </Card.Content>
         </Card>
-      </View>
+        </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -127,5 +131,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
+  },
+  logo: {
+    width: "100%",
+    height: 220,
+    marginBottom: 15,
+    padding: 20,
+    // marginTop: 80,
   },
 });
