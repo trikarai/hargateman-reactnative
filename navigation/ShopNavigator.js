@@ -21,7 +21,8 @@ import CartScreen from "../screens/shop/CartScreen";
 import PersonalStoresScreen from "../screens/store/PersonalStoresScreen";
 import CreateStoreScreen from "../screens/store/CreateStoreScreen";
 // store goods
-import StoreGoodsScreem from "../screens/store/good/StoreGoodsScreen";
+import StoreGoodsScreen from "../screens/store/good/StoreGoodsScreen";
+import AddGoodScreen from "../screens/store/good/AddGood";
 
 // guest screen
 import AuthScreen from "../screens/guest/AuthScreen";
@@ -57,6 +58,7 @@ import AdminCreateGroupScreen from "../screens/community/group/admin/GroupCreate
 import Colors from "./../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AddGood from "../screens/store/good/AddGood";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -95,7 +97,8 @@ const PersonnalStoreNavigator = createStackNavigator(
   {
     PersonnalStores: PersonalStoresScreen,
     CreateStore: CreateStoreScreen,
-    StoreGoods: StoreGoodsScreem,
+    StoreGoods: StoreGoodsScreen,
+    AddGood: AddGoodScreen,
   },
   {
     navigationOptions: {

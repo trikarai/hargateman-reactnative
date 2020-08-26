@@ -73,7 +73,9 @@ const StoreGoodsScreen = (props) => {
           mode="contained"
           icon="plus"
           color={Colors.primary}
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate("AddGood", { storeId: storeId });
+          }}
         >
           Add Good
         </Button>
