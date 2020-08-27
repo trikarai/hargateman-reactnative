@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { ScrollView, Image, KeyboardAvoidingView, StyleSheet, Alert, View } from "react-native";
+import {
+  ScrollView,
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Alert,
+  View,
+  Picker,
+} from "react-native";
 import { Card, Button } from "react-native-paper";
 
 import Input from "../../components/UI/Input";
@@ -37,6 +45,8 @@ const CreateStore = (props) => {
   const [isLoading, setisLoading] = useState(initialState);
   const [isError, setisError] = useState(initialState);
   const [ErrorMsg, setErrorMsg] = useState();
+
+  const [selectedValue, setSelectedValue] = useState("java");
 
   const dispatch = useDispatch();
 
@@ -89,7 +99,7 @@ const CreateStore = (props) => {
       <ScrollView>
         <Card>
           <Card.Content>
-          <Image
+            <Image
               source={require("../../assets/createnewstore.png")}
               style={styles.logo}
             />
@@ -102,6 +112,53 @@ const CreateStore = (props) => {
               onInputChange={inputChangeHandler}
               required
             />
+            <Input
+              id="description"
+              label="Store description"
+              errorText="Please Insert Store description"
+              keyboardType="default"
+              initialValue=""
+              onInputChange={inputChangeHandler}
+              required
+            />
+            <Input
+              id="address"
+              label="Store address"
+              errorText="Please Insert Store address"
+              keyboardType="default"
+              initialValue=""
+              onInputChange={inputChangeHandler}
+            />
+            <Input
+              id="faq"
+              label="Store faq"
+              errorText="Please Insert Store faq"
+              keyboardType="default"
+              initialValue=""
+              onInputChange={inputChangeHandler}
+              required
+            />
+            <Input
+              id="phone"
+              label="Store phone"
+              errorText="Please Insert Store phone"
+              keyboardType="decimal-pad"
+              initialValue=""
+              onInputChange={inputChangeHandler}
+              required
+            />
+
+            <Picker
+              selectedValue={selectedValue}
+              style={{ height: 50 }}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValue(itemValue)
+              }
+            >
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+
             <View style={styles.buttonContainer}>
               <Button
                 mode="contained"
@@ -114,7 +171,7 @@ const CreateStore = (props) => {
             </View>
           </Card.Content>
         </Card>
-        </ScrollView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
