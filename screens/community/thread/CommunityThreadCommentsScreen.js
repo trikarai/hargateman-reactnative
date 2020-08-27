@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
@@ -28,6 +34,7 @@ const CommunityThreadCommentsScreen = (props) => {
   const [isError, setisError] = useState(false);
   const [isComment, setisComment] = useState(false);
   const [isSubmit, setisSubmit] = useState(false);
+  const [isReply, setisReply] = useState(false);
 
   const comments = useSelector((state) => state.thread.comments);
 
@@ -79,8 +86,16 @@ const CommunityThreadCommentsScreen = (props) => {
     setisComment(false);
   };
 
+  const replyCheckhandler = () => {
+    if (!isReply) {
+      setisReply(true);
+    } else {
+      setisReply(false);
+    }
+  };
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View>
         {/* thread detail */}
         <Card>
@@ -143,34 +158,42 @@ const CommunityThreadCommentsScreen = (props) => {
           <View>{/* <Text>test</Text> */}</View>
         )}
       </View>
-      <View style={{ marginTop: 10 }}>
+      <View style={{ marginTop: 10, flex: 1 }}>
         <Caption style={{ marginStart: 5 }}>Thread Comments</Caption>
         <FlatList
+          style={{ flex: 1 }}
           onRefresh={loadComments}
           refreshing={isRefresing}
           data={comments}
           keyExtractor={(item) => item.id}
           renderItem={(itemData) => (
             <ThreadCommentItem
+              style={{ flex: 1 }}
+              communityId={communityId}
+              threadId={threadId}
+              threadPostId={itemData.item.id}
               userName={itemData.item.userName}
               content={itemData.item.content}
               submitTime={itemData.item.submitTime}
+              onReply={replyCheckhandler}
             />
           )}
         />
       </View>
-      <Portal>
-        <FAB
-          visible={!isComment}
-          label="comment"
-          style={styles.fab}
-          small
-          icon="comment"
-          onPress={() => {
-            setisComment(true);
-          }}
-        />
-      </Portal>
+      {!isReply && (
+        <Portal>
+          <FAB
+            visible={!isComment}
+            label="comment"
+            style={styles.fab}
+            small
+            icon="comment"
+            onPress={() => {
+              setisComment(true);
+            }}
+          />
+        </Portal>
+      )}
     </View>
   );
 };

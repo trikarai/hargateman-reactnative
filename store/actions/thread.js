@@ -145,6 +145,43 @@ export const postComment = (communityId, threadId, content) => {
     }
   };
 };
+
+export const replyComment = (communityId, threadId, threadPostId, content) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.credentials.token;
+    try {
+      const response = await axios.post(
+        baseUri.api +
+          "/user/community-memberships/" +
+          communityId +
+          "/community-thread-posts/submit-reply",
+        {
+          communityThreadId: threadId,
+          communityThreadPostId: threadPostId,
+          content: content,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = await response.data;
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+      const errorResData = await error.response.data;
+      let message = "Something went wrong!";
+      const errorId = errorResData.meta.error_detail;
+      if (errorId) {
+        throw new Error(errorId);
+      } else {
+        throw new Error(message);
+      }
+    }
+  };
+};
+
 export const postThread = (communityId, title, content) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;
