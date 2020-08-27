@@ -23,7 +23,7 @@ const ThreadCommentItem = (props) => {
   const dispatch = useDispatch();
 
   const replyHandler = async () => {
-    console.log("Content :" + content);
+    setisLoading(true);
     try {
       await dispatch(
         threadActions.replyComment(
@@ -33,7 +33,10 @@ const ThreadCommentItem = (props) => {
           content
         )
       );
+      setisReply(false);
+      props.onReply();
     } catch (error) {}
+    setisLoading(false);
   };
 
   return (
