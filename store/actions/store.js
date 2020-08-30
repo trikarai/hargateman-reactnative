@@ -17,7 +17,7 @@ export const fetchStores = () => {
         },
       });
       const resData = await response.data;
-      console.log(resData);
+      // console.log(resData);
       const loadedData = [];
       if (resData.data.list) {
         const array = resData.data.list;
@@ -40,13 +40,33 @@ export const fetchStores = () => {
   };
 };
 
-export const createStore = (name) => {
+export const createStore = (
+  name,
+  description,
+  address,
+  faq,
+  phone,
+  provinceId,
+  cityId,
+  districtId,
+  villageId
+) => {
   return async (dispatch, getState) => {
     const token = getState().auth.credentials.token;
     try {
       const response = await axios.post(
         baseUri.api + "/user/personal-stores",
-        { name: name },
+        {
+          name: name,
+          description: description,
+          address: address,
+          faq: faq,
+          phone: phone,
+          provinceId: provinceId,
+          cityId: cityId,
+          districtId: districtId,
+          villageId: villageId,
+        },
         {
           headers: {
             Authorization: "Bearer " + token,

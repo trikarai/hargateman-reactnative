@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ScrollView,
   Image,
@@ -7,9 +7,15 @@ import {
   StyleSheet,
   Alert,
   View,
+  Text,
   Picker,
 } from "react-native";
-import { Card, Button } from "react-native-paper";
+import { ActivityIndicator, Card, Button } from "react-native-paper";
+// import { Picker } from "@react-native-community/picker";
+
+import baseUri from "../../config/baseUri";
+import axios from "axios";
+const regionUri = baseUri.api + "/guest";
 
 import Input from "../../components/UI/Input";
 import Colors from "../../constants/colors";
@@ -43,19 +49,42 @@ const formReducer = (state, action) => {
 const CreateStore = (props) => {
   const initialState = false;
   const [isLoading, setisLoading] = useState(initialState);
+  const [isLoadingProvince, setisLoadingProvince] = useState(initialState);
+  const [isLoadingCities, setisLoadingCities] = useState(initialState);
+  const [isLoadingDistricts, setisLoadingDistricts] = useState(initialState);
+  const [isLoadingVillages, setisLoadingVillages] = useState(initialState);
+
   const [isError, setisError] = useState(initialState);
   const [ErrorMsg, setErrorMsg] = useState();
 
-  const [selectedValue, setSelectedValue] = useState("java");
+  const [province, setProvince] = useState(null);
+  const [city, setCity] = useState(null);
+  const [district, setDistrict] = useState(null);
+  const [village, setVillage] = useState(null);
+
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [villages, setVillages] = useState([]);
 
   const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.credentials.token);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       name: "",
+      description: "",
+      address: "",
+      faq: "",
+      phone: "",
     },
     inputValidities: {
       name: false,
+      description: false,
+      address: false,
+      faq: false,
+      phone: false,
     },
     formIsValid: false,
   });
@@ -70,7 +99,19 @@ const CreateStore = (props) => {
     setErrorMsg(null);
     setisLoading(true);
     try {
-      await dispatch(storeAction.createStore(formState.inputValues.name));
+      await dispatch(
+        storeAction.createStore(
+          formState.inputValues.name,
+          formState.inputValues.description,
+          formState.inputValues.address,
+          formState.inputValues.faq,
+          formState.inputValues.phone,
+          province,
+          city,
+          district,
+          village
+        )
+      );
       props.navigation.goBack();
     } catch (err) {
       setErrorMsg(err.message);
@@ -89,6 +130,113 @@ const CreateStore = (props) => {
     },
     [dispatchFormState]
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setisLoadingProvince(true);
+      try {
+        const response = await axios.get(regionUri + "/provinces", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        const resData = response.data;
+        if (resData.data.list) {
+          setProvinces(resData.data.list);
+        } else {
+          setProvinces([]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setisLoadingProvince(false);
+    };
+    fetchData();
+  }, []);
+
+  const loadCities = async (provinceId) => {
+    setisLoadingCities(true);
+    setDistricts([]);
+    setVillages([]);
+    try {
+      const response = await axios.get(
+        regionUri + "/provinces/" + provinceId + "/cities",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = response.data;
+      if (resData.data.list) {
+        setCities(resData.data.list);
+      } else {
+        setCities([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setisLoadingCities(false);
+  };
+
+  const loadDistricts = async (provinceId, cityId) => {
+    setisLoadingDistricts(true);
+    setVillages([]);
+    try {
+      const response = await axios.get(
+        regionUri +
+          "/provinces/" +
+          provinceId +
+          "/cities/" +
+          cityId +
+          "/districts",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = response.data;
+      if (resData.data.list) {
+        setDistricts(resData.data.list);
+      } else {
+        setDistricts([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setisLoadingDistricts(false);
+  };
+  const loadVillages = async (provinceId, cityId, districtId) => {
+    setisLoadingVillages(true);
+    try {
+      const response = await axios.get(
+        regionUri +
+          "/provinces/" +
+          provinceId +
+          "/cities/" +
+          cityId +
+          "/districts/" +
+          districtId +
+          "/villages",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = response.data;
+      if (resData.data.list) {
+        setVillages(resData.data.list);
+        setVillage(resData.data.list[0].id);
+      } else {
+        setVillages([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setisLoadingVillages(false);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -148,17 +296,89 @@ const CreateStore = (props) => {
               required
             />
 
-            <Picker
-              selectedValue={selectedValue}
-              style={{ height: 50 }}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedValue(itemValue)
-              }
-            >
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
-
+            {isLoadingProvince ? (
+              <ActivityIndicator />
+            ) : (
+              <Picker
+                prompt="Province"
+                selectedValue={province}
+                style={{ height: 50 }}
+                onValueChange={(itemValue) => {
+                  setProvince(itemValue);
+                  loadCities(itemValue);
+                }}
+              >
+                {provinces.map((item, key) => (
+                  <Picker.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id}
+                  />
+                ))}
+              </Picker>
+            )}
+            {isLoadingCities ? (
+              <ActivityIndicator />
+            ) : (
+              <Picker
+                prompt="City"
+                selectedValue={city}
+                style={{ height: 50 }}
+                onValueChange={(itemValue) => {
+                  setCity(itemValue);
+                  loadDistricts(province, itemValue);
+                }}
+              >
+                {cities.map((item, key) => (
+                  <Picker.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id}
+                  />
+                ))}
+              </Picker>
+            )}
+            {isLoadingDistricts ? (
+              <ActivityIndicator />
+            ) : (
+              <Picker
+                prompt="District"
+                selectedValue={district}
+                style={{ height: 50 }}
+                onValueChange={(itemValue) => {
+                  setDistrict(itemValue);
+                  loadVillages(province, city, itemValue);
+                }}
+              >
+                {districts.map((item, key) => (
+                  <Picker.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id}
+                  />
+                ))}
+              </Picker>
+            )}
+            {isLoadingVillages ? (
+              <ActivityIndicator />
+            ) : (
+              <Picker
+                prompt="Villages"
+                selectedValue={village}
+                style={{ height: 50 }}
+                onValueChange={(itemValue) => {
+                  setVillage(itemValue);
+                }}
+              >
+                {villages.map((item, key) => (
+                  <Picker.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id}
+                  />
+                ))}
+              </Picker>
+            )}
             <View style={styles.buttonContainer}>
               <Button
                 mode="contained"
