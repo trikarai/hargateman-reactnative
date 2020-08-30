@@ -158,7 +158,7 @@ const ShopNavigator = createDrawerNavigator(
   {
     Stores: PersonnalStoreNavigator,
     Communities: CommunityNavigator,
-    Products: ProductNavigator,
+    // Products: ProductNavigator,
   },
   {
     contentOptions: {
