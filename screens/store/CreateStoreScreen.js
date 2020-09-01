@@ -304,6 +304,8 @@ const CreateStore = (props) => {
             {isLoadingProvince ? (
               <ActivityIndicator />
             ) : (
+            <View style={styles.headerPicker}>
+              <Text  style={styles.padtop}>Province</Text>
               <Picker
                 style={styles.pickpadtop}
                 prompt="Province"
@@ -321,10 +323,13 @@ const CreateStore = (props) => {
                   />
                 ))}
               </Picker>
+            </View>
             )}
             {isLoadingCities ? (
               <ActivityIndicator />
             ) : (
+            <View style={styles.headerPicker}>
+              <Text  style={styles.padtop}>City</Text>
               <Picker
                 style={styles.pickpadtop}
                 prompt="City"
@@ -342,10 +347,13 @@ const CreateStore = (props) => {
                   />
                 ))}
               </Picker>
+            </View>
             )}
             {isLoadingDistricts ? (
               <ActivityIndicator />
             ) : (
+            <View style={styles.headerPicker}>
+              <Text  style={styles.padtop}>District</Text>
               <Picker
                 style={styles.pickpadtop}
                 prompt="District"
@@ -363,10 +371,13 @@ const CreateStore = (props) => {
                   />
                 ))}
               </Picker>
+            </View>
             )}
             {isLoadingVillages ? (
               <ActivityIndicator />
             ) : (
+            <View style={styles.headerPicker}>
+              <Text  style={styles.padtop}>Villages</Text>
               <Picker
                 style={styles.pickpadtop}
                 prompt="Villages"
@@ -383,6 +394,7 @@ const CreateStore = (props) => {
                   />
                 ))}
               </Picker>
+            </View>
             )}
             <View style={styles.buttonContainer}>
               <Button
@@ -412,7 +424,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 25,
   },
   logo: {
     width: "100%",
@@ -422,10 +434,15 @@ const styles = StyleSheet.create({
     // marginTop: 80,
   },
   padtop: {
-    marginTop: 10,
+    marginTop: 15,
+    color: Colors.grey3
   },
   pickpadtop: {
-    marginTop: 10,
     height: 50,
+  },
+  headerPicker: {
+    borderBottomColor: Colors.grey1,
+    borderStyle: "solid",
+    borderBottomWidth: 1,
   }
 });
