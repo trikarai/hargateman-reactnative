@@ -252,6 +252,7 @@ const CreateStore = (props) => {
               style={styles.logo}
             />
             <Input
+              style={styles.padtop}
               id="name"
               label="Store Name"
               errorText="Please Insert Store Name"
@@ -261,6 +262,7 @@ const CreateStore = (props) => {
               required
             />
             <Input
+              style={styles.padtop}
               id="description"
               label="Store description"
               errorText="Please Insert Store description"
@@ -270,6 +272,7 @@ const CreateStore = (props) => {
               required
             />
             <Input
+              style={styles.padtop}
               id="address"
               label="Store address"
               errorText="Please Insert Store address"
@@ -278,6 +281,7 @@ const CreateStore = (props) => {
               onInputChange={inputChangeHandler}
             />
             <Input
+              style={styles.padtop}
               id="faq"
               label="Store faq"
               errorText="Please Insert Store faq"
@@ -287,6 +291,7 @@ const CreateStore = (props) => {
               required
             />
             <Input
+              style={styles.padtop}
               id="phone"
               label="Store phone"
               errorText="Please Insert Store phone"
@@ -300,9 +305,9 @@ const CreateStore = (props) => {
               <ActivityIndicator />
             ) : (
               <Picker
+                style={styles.pickpadtop}
                 prompt="Province"
                 selectedValue={province}
-                style={{ height: 50 }}
                 onValueChange={(itemValue) => {
                   setProvince(itemValue);
                   loadCities(itemValue);
@@ -321,9 +326,9 @@ const CreateStore = (props) => {
               <ActivityIndicator />
             ) : (
               <Picker
+                style={styles.pickpadtop}
                 prompt="City"
                 selectedValue={city}
-                style={{ height: 50 }}
                 onValueChange={(itemValue) => {
                   setCity(itemValue);
                   loadDistricts(province, itemValue);
@@ -342,9 +347,9 @@ const CreateStore = (props) => {
               <ActivityIndicator />
             ) : (
               <Picker
+                style={styles.pickpadtop}
                 prompt="District"
                 selectedValue={district}
-                style={{ height: 50 }}
                 onValueChange={(itemValue) => {
                   setDistrict(itemValue);
                   loadVillages(province, city, itemValue);
@@ -363,9 +368,9 @@ const CreateStore = (props) => {
               <ActivityIndicator />
             ) : (
               <Picker
+                style={styles.pickpadtop}
                 prompt="Villages"
                 selectedValue={village}
-                style={{ height: 50 }}
                 onValueChange={(itemValue) => {
                   setVillage(itemValue);
                 }}
@@ -416,4 +421,11 @@ const styles = StyleSheet.create({
     padding: 20,
     // marginTop: 80,
   },
+  padtop: {
+    marginTop: 10,
+  },
+  pickpadtop: {
+    marginTop: 10,
+    height: 50,
+  }
 });
