@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
   View,
+  Image,
 } from "react-native";
 import { Card, Button } from "react-native-paper";
 
@@ -117,80 +118,92 @@ const AddGood = (props) => {
 
   return (
     <KeyboardAvoidingView
-      behavior="padding"
+      behavior="height"
       keyboardVerticalOffset={5}
       style={styles.screen}
     >
       <ScrollView>
         <Card>
           <Card.Content>
+            <Image
+              source={require("../../../assets/addproduct.png")}
+              style={styles.logo}
+            />
             <Input
+              style={styles.padtop}
               id="name"
-              label="Good Name"
-              errorText="Please Insert Good Name"
+              label="Product Name"
+              errorText="Please Insert Product Name"
               keyboardType="default"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="description"
-              label="Good description"
-              errorText="Please Insert Good description"
+              label="Product description"
+              errorText="Please Insert Product description"
               keyboardType="default"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="faq"
-              label="Good faq"
-              errorText="Please Insert Good faq"
+              label="Product FAQ"
+              errorText="Please Insert Product FAQ"
               keyboardType="default"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="price"
-              label="Good price"
-              errorText="Please Insert Good price"
+              label="Product price"
+              errorText="Please Insert Product price"
               keyboardType="decimal-pad"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="stock"
-              label="Good stock"
-              errorText="Please Insert Good stock"
+              label="Product stock"
+              errorText="Please Insert Product stock"
               keyboardType="decimal-pad"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="shippingWeight"
-              label="Good shippingWeight"
-              errorText="Please Insert Good shippingWeight"
+              label="Product shipping weight"
+              errorText="Please Insert Product shipping weight"
               keyboardType="decimal-pad"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="minimumOrder"
-              label="Good minimumOrder"
-              errorText="Please Insert Good minimumOrder"
+              label="Product minimum order"
+              errorText="Please Insert Product minimum order"
               keyboardType="decimal-pad"
               initialValue=""
               onInputChange={inputChangeHandler}
               required
             />
             <Input
+              style={styles.padtop}
               id="condition"
-              label="Good condition"
-              errorText="Please Insert Good condition"
+              label="Product condition"
+              errorText="Please Insert Product condition"
               keyboardType="default"
               initialValue=""
               onInputChange={inputChangeHandler}
@@ -204,7 +217,7 @@ const AddGood = (props) => {
                 color={Colors.primary}
                 onPress={createHandler}
               >
-                Create
+                Add
               </Button>
             </View>
           </Card.Content>
@@ -218,8 +231,23 @@ export default AddGood;
 
 AddGood.navigationOptions = (navData) => {
   return {
-    headerTitle: "Add Good",
+    headerTitle: "Add Product",
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 25,
+  },
+  padtop: {
+    marginTop: 15,
+    color: Colors.grey3
+  },
+  logo: {
+    width: "100%",
+    height: 220,
+    marginBottom: 15,
+    padding: 20,
+    // marginTop: 80,
+  },
+});
