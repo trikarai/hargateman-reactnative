@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, Text, View, Alert, FlatList } from "react-native";
+import { Image, StyleSheet, Text, View, Alert, FlatList } from "react-native";
 import { Card, ActivityIndicator, Button } from "react-native-paper";
 
 import Colors from "../../../constants/colors";
@@ -68,17 +68,31 @@ const StoreGoodsScreen = (props) => {
   } else {
     return (
       <View>
+        <Card style={{
+          margin: 20,
+          padding: 10,
+        }}>
+        <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+          <Image
+            source={require("../../../assets/addproduct-x1.png")}
+            style={styles.logo}
+          />
+        </View>
         <Button
           style={{ margin: 5 }}
           mode="contained"
-          icon="plus"
+          // icon="plus"
           color={Colors.primary}
           onPress={() => {
             props.navigation.navigate("AddGood", { storeId: storeId });
           }}
         >
-          Add Good
+          Add New Product
         </Button>
+        </Card>
         <FlatList
           onRefresh={loadGoods}
           refreshing={isRefreshing}
@@ -105,8 +119,23 @@ export default StoreGoodsScreen;
 
 StoreGoodsScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Store Goods",
+    headerTitle: "Store Products",
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 25,
+  },
+  padtop: {
+    marginTop: 15,
+    color: Colors.grey3
+  },
+  logo: {
+    // width: "10%",
+    // height: 220,
+    marginBottom: 15,
+    padding: 20,
+    // marginTop: 80,
+  },
+});
