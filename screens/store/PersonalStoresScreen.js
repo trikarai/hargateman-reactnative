@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FlatList, View, StyleSheet, Alert } from "react-native";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
+import { Image, FlatList, View, StyleSheet, Alert } from "react-native";
+import { Card, ActivityIndicator, Button, Text } from "react-native-paper";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "./../../components/UI/HeaderButton";
@@ -80,6 +80,19 @@ const PersonalStoresScreen = (props) => {
   } else {
     return (
       <View style={{ margin: 5 }}>
+        <Card style={{
+          margin: 20,
+          padding: 10,
+        }}>
+        <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+          <Image
+            source={require("../../assets/store.png")}
+            style={styles.logo}
+          />
+        </View>
         <Button
           style={{ margin: 5 }}
           mode="contained"
@@ -90,6 +103,7 @@ const PersonalStoresScreen = (props) => {
         >
           Create New Store
         </Button>
+        </Card>
         {/* <Text>{JSON.stringify(stores)}</Text> */}
         <FlatList
           onRefresh={loadStores}
@@ -130,4 +144,19 @@ PersonalStoresScreen.navigationOptions = (navData) => {
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 25,
+  },
+  padtop: {
+    marginTop: 15,
+    color: Colors.grey3
+  },
+  logo: {
+    // width: "10%",
+    // height: 220,
+    marginBottom: 15,
+    padding: 20,
+    // marginTop: 80,
+  },
+});
