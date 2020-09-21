@@ -3,6 +3,11 @@
     "name": "Harga Teman",
     "slug": "hargateman-reactnative",
     "version": "0.0.1",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,6 +26,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
